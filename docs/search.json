@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Cotação do Dolar",
+    "section": "",
+    "text": "Cotação Dolar: Compra x Venda Aqui está um programa simples em python, utilizo a biblioteca requests junto com pandas para manusear os dados json do Banco Central do Brasil.\n\nimport requests\nimport plotly.express as px\nimport pandas as pd\n\nurl = ('https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@dataInicial=%2704-01-2025%27&@dataFinalCotacao=%2704-30-2025%27&$top=30&$skip=0&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao')\n\nresposta = requests.get(url)\ndados = resposta.json()\n\ncompras = []\nvendas = []\ndatas = []\n\nfor valores in dados['value']:\n    compras.append(valores['cotacaoCompra'])\n    vendas.append(valores['cotacaoVenda'])\n    datas.append(valores['dataHoraCotacao'])\n    \ndf = pd.DataFrame({\n    \"data\": datas,\n    \"compra\": compras,\n    \"venda\": vendas\n})\n\nEsse é o código do grafico, utilizei o plotly, juntamente com as informações que extrai.\n\nfig = px.line(df, x=\"data\", y=[\"compra\", \"venda\"], title=\"\")\nfig\n\nfig"
+  },
+  {
+    "objectID": "posts/onibus/index.html",
+    "href": "posts/onibus/index.html",
+    "title": "Monitoramento SPTRANS",
+    "section": "",
+    "text": "Aqui está o código que mapeia quando executado, a posiçao reak do onibus, e suas paradas. O código começa com um .env onde está nosso token e a linha que vamos utilizar\nBibiotecas usadas no código: requests folium os dotenv\n\nimport os\nimport requests\nimport folium\nfrom dotenv import load_dotenv\n\n\nload_dotenv(\".env\")\n\nCODIGO_LINHA = 2506 \n\ns = requests.Session()\ntoken = os.getenv('SPTRANS_TOKEN')\n\ns.post(f\"http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token={token}\")\n\n&lt;Response [200]&gt;\n\n\nAqui as paradas:\n\nres_paradas = s.get(\n    f\"http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha={CODIGO_LINHA}\"\n)\nif res_paradas.status_code == 200:\n    paradas = res_paradas.json()\nelse:\n    paradas = []\n\nPosiçao real do onibus:\n\nres_posicao = s.get(\n    f\"http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha={CODIGO_LINHA}\"\n)\n\nveiculos = []\nhora_coleta = \"-\"\n\nif res_posicao.status_code == 200:\n    dados_posicao = res_posicao.json()\n    \n    veiculos = dados_posicao.get('vs', [])\n    hora_coleta = dados_posicao.get('hr', '-')\n\nPor ultimo a geração do mapa\n\nif paradas:\n    lat_central = sum(p['py'] for p in paradas) / len(paradas)\n    lon_central = sum(p['px'] for p in paradas) / len(paradas)\nelse:\n    lat_central, lon_central = -23.5489, -46.6388\n\nm = folium.Map(location=[lat_central, lon_central], zoom_start=14, tiles=\"cartodbpositron\")\n\n\nfor p in paradas:\n    folium.CircleMarker(\n        location=[p['py'], p['px']],\n        radius=4,\n        color='red',\n        fill=True,\n        fill_color='red',\n        fill_opacity=1.0,\n        popup=f\"&lt;b&gt;Parada:&lt;/b&gt; {p['np']}&lt;br&gt;{p['ed']}\",\n        tooltip=p['np']\n    ).add_to(m)\n\n\nfor v in veiculos:\n    popup_onibus = f\"\"\"\n        &lt;b&gt;Prefixo:&lt;/b&gt; {v['p']}&lt;br&gt;\n        &lt;b&gt;Acessível:&lt;/b&gt; {'Sim' if v['a'] else 'Não'}&lt;br&gt;\n        &lt;b&gt;Horário da info:&lt;/b&gt; {hora_coleta}\n    \"\"\"\n    \n    folium.Marker(\n        location=[v['py'], v['px']],\n        popup=popup_onibus,\n        tooltip=f\"Ônibus {v['p']}\",\n        icon=folium.Icon(color='green', icon='bus', prefix='fa')\n    ).add_to(m)\n\n\nm\n\nMake this Notebook Trusted to load map: File -&gt; Trust Notebook"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "blog",
+    "section": "",
+    "text": "Monitoramento SPTRANS\n\n\n\nnews\n\nonibus\n\ncódigo\n\npython\n\n\n\n\n\n\n\n\n\nNov 23, 2025\n\n\nGabriel Morine\n\n\n\n\n\n\n\n\n\n\n\n\nRegressão Linear\n\n\n\ncódigo\n\nprogramação\n\nregressão linear\n\n\n\n\n\n\n\n\n\nNov 22, 2025\n\n\nGabriel Morine\n\n\n\n\n\n\n\n\n\n\n\n\nCotação do Dolar\n\n\n\nprogramação\n\nanalise\n\npython\n\ncotação\n\ncódigo\n\n\n\n\n\n\n\n\n\nNov 22, 2025\n\n\nGabriel Morine\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/post-regressao-linear/index.html",
+    "href": "posts/post-regressao-linear/index.html",
+    "title": "Regressão Linear",
+    "section": "",
+    "text": "Esse é um código que calcula a regressão linear entre anos de estudo e salário. A primeira parte peguei as informações do txt e transformei em um tipo de dado que o plotly conseguiria ler com a biblioteca pandas.\n\nimport pandas as pd\nimport statsmodels.api as sm\nimport plotly.express as px\nimport plotly.graph_objects as go\n\nvalores_x = [float(x.strip()) for x in open(\"C:\\\\VS_SITEPY\\\\blog\\\\x.txt\")]\nvalores_y = [float(y.strip()) for y in open(\"C:\\\\VS_SITEPY\\\\blog\\\\y.txt\")]\n\ndf = pd.DataFrame({\"ano\": valores_x, \"salario\": valores_y})\n\nRegressão Linear:\n\nX = sm.add_constant(df[\"ano\"])\nmodelo = sm.OLS(df[\"salario\"], X).fit()\n\na = modelo.params[\"const\"]\nb = modelo.params[\"ano\"]\n\nprint(\"Intercepto (a):\", a)\nprint(\"Inclinação (b):\", b)\n\nIntercepto (a): 373.93446839130297\nInclinação (b): 991.6278332981968\n\n\nGráfico no Plotly:\n\nfig = go.Figure()\n\n\nfig.add_trace(go.Scatter(\n    x=df[\"ano\"],\n    y=df[\"salario\"],\n    mode=\"markers\",\n    name=\"Dados\",\n))\n\n\ndf[\"reta\"] = a + b * df[\"ano\"]\n\nfig.add_trace(go.Scatter(\n    x=df[\"ano\"],\n    y=df[\"reta\"],\n    mode=\"lines\",\n    name=\"Regressão Linear\",\n))\n\nfig.update_layout(\n    title=\"Regressão Linear Salário/Ano\",\n    xaxis_title=\"Ano\",\n    yaxis_title=\"Salário\",\n)\n\nfig"
+  }
+]

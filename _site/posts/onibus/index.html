@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Gabriel Morine">
+<meta name="dcterms.date" content="2025-11-23">
+
+<title>Monitoramento SPTRANS – blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Monitoramento SPTRANS</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">news</div>
+                <div class="quarto-category">onibus</div>
+                <div class="quarto-category">código</div>
+                <div class="quarto-category">python</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Gabriel Morine </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 23, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>Aqui está o código que mapeia quando executado, a posiçao reak do onibus, e suas paradas. O código começa com um .env onde está nosso token e a linha que vamos utilizar</p>
+<p>Bibiotecas usadas no código: <code>requests</code> <code>folium</code> <code>os</code> <code>dotenv</code></p>
+<div id="a95cd4c6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>load_dotenv(<span class="st">".env"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>CODIGO_LINHA <span class="op">=</span> <span class="dv">2506</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> requests.Session()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>token <span class="op">=</span> os.getenv(<span class="st">'SPTRANS_TOKEN'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>s.post(<span class="ss">f"http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token=</span><span class="sc">{</span>token<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>&lt;Response [200]&gt;</code></pre>
+</div>
+</div>
+<p>Aqui as paradas:</p>
+<div id="221f3e20" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>res_paradas <span class="op">=</span> s.get(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha=</span><span class="sc">{</span>CODIGO_LINHA<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> res_paradas.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    paradas <span class="op">=</span> res_paradas.json()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    paradas <span class="op">=</span> []</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Posiçao real do onibus:</p>
+<div id="014b489b" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>res_posicao <span class="op">=</span> s.get(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha=</span><span class="sc">{</span>CODIGO_LINHA<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>veiculos <span class="op">=</span> []</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>hora_coleta <span class="op">=</span> <span class="st">"-"</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> res_posicao.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    dados_posicao <span class="op">=</span> res_posicao.json()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    veiculos <span class="op">=</span> dados_posicao.get(<span class="st">'vs'</span>, [])</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    hora_coleta <span class="op">=</span> dados_posicao.get(<span class="st">'hr'</span>, <span class="st">'-'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Por ultimo a geração do mapa</p>
+<div id="26465361" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> paradas:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    lat_central <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'py'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    lon_central <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'px'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    lat_central, lon_central <span class="op">=</span> <span class="op">-</span><span class="fl">23.5489</span>, <span class="op">-</span><span class="fl">46.6388</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> folium.Map(location<span class="op">=</span>[lat_central, lon_central], zoom_start<span class="op">=</span><span class="dv">14</span>, tiles<span class="op">=</span><span class="st">"cartodbpositron"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> paradas:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    folium.CircleMarker(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        location<span class="op">=</span>[p[<span class="st">'py'</span>], p[<span class="st">'px'</span>]],</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        radius<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'red'</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        fill<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        fill_color<span class="op">=</span><span class="st">'red'</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        fill_opacity<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        popup<span class="op">=</span><span class="ss">f"&lt;b&gt;Parada:&lt;/b&gt; </span><span class="sc">{</span>p[<span class="st">'np'</span>]<span class="sc">}</span><span class="ss">&lt;br&gt;</span><span class="sc">{</span>p[<span class="st">'ed'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        tooltip<span class="op">=</span>p[<span class="st">'np'</span>]</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    ).add_to(m)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> veiculos:</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    popup_onibus <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="ss">        &lt;b&gt;Prefixo:&lt;/b&gt; </span><span class="sc">{</span>v[<span class="st">'p'</span>]<span class="sc">}</span><span class="ss">&lt;br&gt;</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="ss">        &lt;b&gt;Acessível:&lt;/b&gt; </span><span class="sc">{</span><span class="st">'Sim'</span> <span class="cf">if</span> v[<span class="st">'a'</span>] <span class="cf">else</span> <span class="st">'Não'</span><span class="sc">}</span><span class="ss">&lt;br&gt;</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="ss">        &lt;b&gt;Horário da info:&lt;/b&gt; </span><span class="sc">{</span>hora_coleta<span class="sc">}</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    folium.Marker(</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        location<span class="op">=</span>[v[<span class="st">'py'</span>], v[<span class="st">'px'</span>]],</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        popup<span class="op">=</span>popup_onibus,</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        tooltip<span class="op">=</span><span class="ss">f"Ônibus </span><span class="sc">{</span>v[<span class="st">'p'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        icon<span class="op">=</span>folium.Icon(color<span class="op">=</span><span class="st">'green'</span>, icon<span class="op">=</span><span class="st">'bus'</span>, prefix<span class="op">=</span><span class="st">'fa'</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    ).add_to(m)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
+    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
+    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
+    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
+    
+            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
+            <style>
+                #map_ce785d78bdf2c25a104295f3e1a393ce {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class=&quot;folium-map&quot; id=&quot;map_ce785d78bdf2c25a104295f3e1a393ce&quot; ></div>
+        
+</body>
+<script>
+    
+    
+            var map_ce785d78bdf2c25a104295f3e1a393ce = L.map(
+                &quot;map_ce785d78bdf2c25a104295f3e1a393ce&quot;,
+                {
+                    center: [-23.5299502, -46.6715388],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 14,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_37b3b565f334fbfb0e36154cbc3d79eb = L.tileLayer(
+                &quot;https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 20,
+  &quot;maxNativeZoom&quot;: 20,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\&quot;https://carto.com/attributions\&quot;\u003eCARTO\u003c/a\u003e&quot;,
+  &quot;subdomains&quot;: &quot;abcd&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_37b3b565f334fbfb0e36154cbc3d79eb.addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+            var circle_marker_f83662d30f24f06451ca3e3f4a278848 = L.circleMarker(
+                [-23.534564, -46.654302],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_969ede57995241164167af893969aea3 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_4ab9b77b45ede86af1fa4ed6fe297dbd = $(`<div id=&quot;html_4ab9b77b45ede86af1fa4ed6fe297dbd&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANGELICA B/C<br>AV   ANGELICA</div>`)[0];
+                popup_969ede57995241164167af893969aea3.setContent(html_4ab9b77b45ede86af1fa4ed6fe297dbd);
+            
+        
+
+        circle_marker_f83662d30f24f06451ca3e3f4a278848.bindPopup(popup_969ede57995241164167af893969aea3)
+        ;
+
+        
+    
+    
+            circle_marker_f83662d30f24f06451ca3e3f4a278848.bindTooltip(
+                `<div>
+                     ANGELICA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_8679a90939bbf452486ab9f7ed68d660 = L.circleMarker(
+                [-23.525799, -46.679251],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_a6ee7619905125f55274504114f15420 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_83657e0ed4935dfe179a2f690ba2566e = $(`<div id=&quot;html_83657e0ed4935dfe179a2f690ba2566e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PARADA PALMEIRAS B/C<br>R PADRE ANTONIO TOMAS/ AV POMPEIA</div>`)[0];
+                popup_a6ee7619905125f55274504114f15420.setContent(html_83657e0ed4935dfe179a2f690ba2566e);
+            
+        
+
+        circle_marker_8679a90939bbf452486ab9f7ed68d660.bindPopup(popup_a6ee7619905125f55274504114f15420)
+        ;
+
+        
+    
+    
+            circle_marker_8679a90939bbf452486ab9f7ed68d660.bindTooltip(
+                `<div>
+                     PARADA PALMEIRAS B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_a634169fe635efe8b335d5f8b91436de = L.circleMarker(
+                [-23.526523, -46.673588],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_d4572f80d63ac0eb910709a13052e151 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_c01af8a145a2e892788c4c8d86838fc2 = $(`<div id=&quot;html_c01af8a145a2e892788c4c8d86838fc2&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANTARTICA B/C<br>PC SOUSA ARANHA/ VDTO ANTARTICA</div>`)[0];
+                popup_d4572f80d63ac0eb910709a13052e151.setContent(html_c01af8a145a2e892788c4c8d86838fc2);
+            
+        
+
+        circle_marker_a634169fe635efe8b335d5f8b91436de.bindPopup(popup_d4572f80d63ac0eb910709a13052e151)
+        ;
+
+        
+    
+    
+            circle_marker_a634169fe635efe8b335d5f8b91436de.bindTooltip(
+                `<div>
+                     ANTARTICA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_da542d217502db6ef230ce3dfcfadb16 = L.circleMarker(
+                [-23.528131, -46.670652],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_1f99e32487763a566ae37bee75a34d94 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_afe7d0a766b5fe03a23c741fb720f47a = $(`<div id=&quot;html_afe7d0a766b5fe03a23c741fb720f47a&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> BABY BARIONY B/C<br>R DONA GERMAINE BUCHARD/ R MINISTRO GODOI</div>`)[0];
+                popup_1f99e32487763a566ae37bee75a34d94.setContent(html_afe7d0a766b5fe03a23c741fb720f47a);
+            
+        
+
+        circle_marker_da542d217502db6ef230ce3dfcfadb16.bindPopup(popup_1f99e32487763a566ae37bee75a34d94)
+        ;
+
+        
+    
+    
+            circle_marker_da542d217502db6ef230ce3dfcfadb16.bindTooltip(
+                `<div>
+                     BABY BARIONY B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_33ab47066462445f5aea08364131034d = L.circleMarker(
+                [-23.53021, -46.6669],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_62a1fba7f5bbf1ee17c75ef3e9234396 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_4eb821c28bb408800f5f104aded71f0f = $(`<div id=&quot;html_4eb821c28bb408800f5f104aded71f0f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PQ. DA ÁGUA BRANCA B/C<br>R MINISTRO GODOI/ R LINCOLN ALBUQUERQUE</div>`)[0];
+                popup_62a1fba7f5bbf1ee17c75ef3e9234396.setContent(html_4eb821c28bb408800f5f104aded71f0f);
+            
+        
+
+        circle_marker_33ab47066462445f5aea08364131034d.bindPopup(popup_62a1fba7f5bbf1ee17c75ef3e9234396)
+        ;
+
+        
+    
+    
+            circle_marker_33ab47066462445f5aea08364131034d.bindTooltip(
+                `<div>
+                     PQ. DA ÁGUA BRANCA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_e59ee2119ccf475399d64033005d8cef = L.circleMarker(
+                [-23.52494, -46.698995],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_ef545a910b0f1502ca73b7172ab620ba = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_cc5182b254169d4f120686bf80d95641 = $(`<div id=&quot;html_cc5182b254169d4f120686bf80d95641&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SCIPIAO B/C<br>R SCIPIAO/ R AURELIA</div>`)[0];
+                popup_ef545a910b0f1502ca73b7172ab620ba.setContent(html_cc5182b254169d4f120686bf80d95641);
+            
+        
+
+        circle_marker_e59ee2119ccf475399d64033005d8cef.bindPopup(popup_ef545a910b0f1502ca73b7172ab620ba)
+        ;
+
+        
+    
+    
+            circle_marker_e59ee2119ccf475399d64033005d8cef.bindTooltip(
+                `<div>
+                     SCIPIAO B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_32cea5f4da1c8fe930d7eb5e01710448 = L.circleMarker(
+                [-23.524994, -46.695297],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_49c671da8d4f56fb9ec1096478d13163 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_d30550d96fc876c6eadd88073142dad6 = $(`<div id=&quot;html_d30550d96fc876c6eadd88073142dad6&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VESPASIANO B/C<br>R VESPASIANO/ R CAIO GRACO</div>`)[0];
+                popup_49c671da8d4f56fb9ec1096478d13163.setContent(html_d30550d96fc876c6eadd88073142dad6);
+            
+        
+
+        circle_marker_32cea5f4da1c8fe930d7eb5e01710448.bindPopup(popup_49c671da8d4f56fb9ec1096478d13163)
+        ;
+
+        
+    
+    
+            circle_marker_32cea5f4da1c8fe930d7eb5e01710448.bindTooltip(
+                `<div>
+                     VESPASIANO B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_4827e4636731f5128184db14ed512d1a = L.circleMarker(
+                [-23.525029, -46.690074],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_99d4f77204ed252af702b5808f84da14 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_aade3f843062ec489e45d722a807ce7d = $(`<div id=&quot;html_aade3f843062ec489e45d722a807ce7d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CORNELIA<br>R CLAUDIO/ R CRASSO</div>`)[0];
+                popup_99d4f77204ed252af702b5808f84da14.setContent(html_aade3f843062ec489e45d722a807ce7d);
+            
+        
+
+        circle_marker_4827e4636731f5128184db14ed512d1a.bindPopup(popup_99d4f77204ed252af702b5808f84da14)
+        ;
+
+        
+    
+    
+            circle_marker_4827e4636731f5128184db14ed512d1a.bindTooltip(
+                `<div>
+                     CORNELIA
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_c815bce3b2e835edf15ed5d09aeee6ae = L.circleMarker(
+                [-23.523407, -46.700541],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_e8899f520c41033f56f56190ecd5797e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_d5a99d4140fb6f6ba5e99fb2b733044d = $(`<div id=&quot;html_d5a99d4140fb6f6ba5e99fb2b733044d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CATAO B/C<br>R FAUSTOLO/ R ROMA</div>`)[0];
+                popup_e8899f520c41033f56f56190ecd5797e.setContent(html_d5a99d4140fb6f6ba5e99fb2b733044d);
+            
+        
+
+        circle_marker_c815bce3b2e835edf15ed5d09aeee6ae.bindPopup(popup_e8899f520c41033f56f56190ecd5797e)
+        ;
+
+        
+    
+    
+            circle_marker_c815bce3b2e835edf15ed5d09aeee6ae.bindTooltip(
+                `<div>
+                     CATAO B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_f5fb47a9f0a178f09649d5a842e92368 = L.circleMarker(
+                [-23.52517, -46.683408],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_9972e23963b69c9949df68176eac0e67 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_ae911e7cfd4992efe870e2948d6fae1e = $(`<div id=&quot;html_ae911e7cfd4992efe870e2948d6fae1e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SESC POMPEIA B/C<br>R TURIASSU/ R BARAO DO BANANAL</div>`)[0];
+                popup_9972e23963b69c9949df68176eac0e67.setContent(html_ae911e7cfd4992efe870e2948d6fae1e);
+            
+        
+
+        circle_marker_f5fb47a9f0a178f09649d5a842e92368.bindPopup(popup_9972e23963b69c9949df68176eac0e67)
+        ;
+
+        
+    
+    
+            circle_marker_f5fb47a9f0a178f09649d5a842e92368.bindTooltip(
+                `<div>
+                     SESC POMPEIA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_3057c11d77da11bba6683404f59475f5 = L.circleMarker(
+                [-23.540545, -46.643624],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_57f6794ed08075a946ce51252d1422f5 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_c11241831db9141b92f9b94890b4f73e = $(`<div id=&quot;html_c11241831db9141b92f9b94890b4f73e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VITORIA B/C<br>R VITORIA/ AL BARAO DE CAMPINAS</div>`)[0];
+                popup_57f6794ed08075a946ce51252d1422f5.setContent(html_c11241831db9141b92f9b94890b4f73e);
+            
+        
+
+        circle_marker_3057c11d77da11bba6683404f59475f5.bindPopup(popup_57f6794ed08075a946ce51252d1422f5)
+        ;
+
+        
+    
+    
+            circle_marker_3057c11d77da11bba6683404f59475f5.bindTooltip(
+                `<div>
+                     VITORIA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_4282eebb6245d45b080ff1a051cecb86 = L.circleMarker(
+                [-23.532847, -46.657404],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_e8d706c059fff182b1e8b5c417a36714 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_bc7ecaa1be456d870c02ee498410a17d = $(`<div id=&quot;html_bc7ecaa1be456d870c02ee498410a17d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ROSA E SILVA C/B<br>R OLIMPIA DE ALMEIDA PRADO/ R LOPES DE OLIVEIRA</div>`)[0];
+                popup_e8d706c059fff182b1e8b5c417a36714.setContent(html_bc7ecaa1be456d870c02ee498410a17d);
+            
+        
+
+        circle_marker_4282eebb6245d45b080ff1a051cecb86.bindPopup(popup_e8d706c059fff182b1e8b5c417a36714)
+        ;
+
+        
+    
+    
+            circle_marker_4282eebb6245d45b080ff1a051cecb86.bindTooltip(
+                `<div>
+                     ROSA E SILVA C/B
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b = L.circleMarker(
+                [-23.538708, -46.646888],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_b607383d0a55cf23aa3d84ca4bdb05af = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_a9cfb878d2ea98ac0802d48ae24a0f3f = $(`<div id=&quot;html_a9cfb878d2ea98ac0802d48ae24a0f3f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANA CINTRA B/C<br>R DOUTOR FREDERICO STEIDEL/ AV DUQUE DE CAXIAS</div>`)[0];
+                popup_b607383d0a55cf23aa3d84ca4bdb05af.setContent(html_a9cfb878d2ea98ac0802d48ae24a0f3f);
+            
+        
+
+        circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b.bindPopup(popup_b607383d0a55cf23aa3d84ca4bdb05af)
+        ;
+
+        
+    
+    
+            circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b.bindTooltip(
+                `<div>
+                     ANA CINTRA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_e99858cdb6d6f60a282f6163327a346f = L.circleMarker(
+                [-23.532068, -46.660957],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_4337f6fddc630e8cf83f45e59cfbc09b = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_8624535a956345d3333a44ad65741470 = $(`<div id=&quot;html_8624535a956345d3333a44ad65741470&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PACAEMBU B/C<br>R FRANCISCO ESTACIO FORTES/ AV PACAEMBU</div>`)[0];
+                popup_4337f6fddc630e8cf83f45e59cfbc09b.setContent(html_8624535a956345d3333a44ad65741470);
+            
+        
+
+        circle_marker_e99858cdb6d6f60a282f6163327a346f.bindPopup(popup_4337f6fddc630e8cf83f45e59cfbc09b)
+        ;
+
+        
+    
+    
+            circle_marker_e99858cdb6d6f60a282f6163327a346f.bindTooltip(
+                `<div>
+                     PACAEMBU B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_3fec9624338be40444c3e101a829bf26 = L.circleMarker(
+                [-23.536318, -46.651201],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_a5f2bc3702cfaf25ca71a50b506c4c42 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_ab38ee7af230ef507e4718926b8ae620 = $(`<div id=&quot;html_ab38ee7af230ef507e4718926b8ae620&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> NOTHMANN C/B<br>R GENERAL JULIO MARCONDES SALGADO/ AL NOTHMANN</div>`)[0];
+                popup_a5f2bc3702cfaf25ca71a50b506c4c42.setContent(html_ab38ee7af230ef507e4718926b8ae620);
+            
+        
+
+        circle_marker_3fec9624338be40444c3e101a829bf26.bindPopup(popup_a5f2bc3702cfaf25ca71a50b506c4c42)
+        ;
+
+        
+    
+    
+            circle_marker_3fec9624338be40444c3e101a829bf26.bindTooltip(
+                `<div>
+                     NOTHMANN C/B
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var marker_3b7159b385e88eead5aee2f665747738 = L.marker(
+                [-23.52501625, -46.685184250000006],
+                {
+}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+            var icon_eb8b9263429400707ca06c51aaa0a513 = L.AwesomeMarkers.icon(
+                {
+  &quot;markerColor&quot;: &quot;green&quot;,
+  &quot;iconColor&quot;: &quot;white&quot;,
+  &quot;icon&quot;: &quot;bus&quot;,
+  &quot;prefix&quot;: &quot;fa&quot;,
+  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
+}
+            );
+        
+    
+        var popup_6a75c9077761376b644c0764f3dd3b0f = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_5b654fa4238053ad2c1029e09d945777 = $(`<div id=&quot;html_5b654fa4238053ad2c1029e09d945777&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12613<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 21:07     </div>`)[0];
+                popup_6a75c9077761376b644c0764f3dd3b0f.setContent(html_5b654fa4238053ad2c1029e09d945777);
+            
+        
+
+        marker_3b7159b385e88eead5aee2f665747738.bindPopup(popup_6a75c9077761376b644c0764f3dd3b0f)
+        ;
+
+        
+    
+    
+            marker_3b7159b385e88eead5aee2f665747738.bindTooltip(
+                `<div>
+                     Ônibus 12613
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+                marker_3b7159b385e88eead5aee2f665747738.setIcon(icon_eb8b9263429400707ca06c51aaa0a513);
+            
+    
+            var marker_9534571e987c12333a6ee328663aed89 = L.marker(
+                [-23.547649, -46.641011500000005],
+                {
+}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+            var icon_96b918e9b884903f132edcf3af16c7eb = L.AwesomeMarkers.icon(
+                {
+  &quot;markerColor&quot;: &quot;green&quot;,
+  &quot;iconColor&quot;: &quot;white&quot;,
+  &quot;icon&quot;: &quot;bus&quot;,
+  &quot;prefix&quot;: &quot;fa&quot;,
+  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
+}
+            );
+        
+    
+        var popup_d433c60325c72c7ef85834151f7b3a7d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_851b32ca16a70223bce6e0bda1a0c411 = $(`<div id=&quot;html_851b32ca16a70223bce6e0bda1a0c411&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12685<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 21:07     </div>`)[0];
+                popup_d433c60325c72c7ef85834151f7b3a7d.setContent(html_851b32ca16a70223bce6e0bda1a0c411);
+            
+        
+
+        marker_9534571e987c12333a6ee328663aed89.bindPopup(popup_d433c60325c72c7ef85834151f7b3a7d)
+        ;
+
+        
+    
+    
+            marker_9534571e987c12333a6ee328663aed89.bindTooltip(
+                `<div>
+                     Ônibus 12685
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+                marker_9534571e987c12333a6ee328663aed89.setIcon(icon_96b918e9b884903f132edcf3af16c7eb);
+            
+</script>
+</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/your-website-url\.example\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

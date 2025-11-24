@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_1829808163d3a349c5846c850b226978 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_1829808163d3a349c5846c850b226978" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_1829808163d3a349c5846c850b226978 = L.map(
+                "map_1829808163d3a349c5846c850b226978",
+                {
+                    center: [-23.535072857142858, -46.67319442857143],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_26846ea9963ddc574df87f1e241bf7c3 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_26846ea9963ddc574df87f1e241bf7c3.addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+            var circle_marker_c1990e59b2350a555a757387746843a2 = L.circleMarker(
+                [-23.555176, -46.66237],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+        var popup_36fc0e1f1960e9f15f7260e8976c8fd3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_75cd3d4d764cbd06031e7a378a42d625 = $(`<div id="html_75cd3d4d764cbd06031e7a378a42d625" style="width: 100.0%; height: 100.0%;">         <b>Linha:</b> 874T/10 IPIRANGA - LAPA (Sentido Volta)<br>         <b>Parada:</b> PAULISTA C/B<br>         <b>Endereço:</b> AV PAULISTA/ R ANTONIO CARLOS<br>         <b>Código:</b> 260016855     </div>`)[0];
+                popup_36fc0e1f1960e9f15f7260e8976c8fd3.setContent(html_75cd3d4d764cbd06031e7a378a42d625);
+            
+        
+
+        circle_marker_c1990e59b2350a555a757387746843a2.bindPopup(popup_36fc0e1f1960e9f15f7260e8976c8fd3)
+        ;
+
+        
+    
+    
+            circle_marker_c1990e59b2350a555a757387746843a2.bindTooltip(
+                `<div>
+                     PAULISTA C/B
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3fd65b07a6db29347b14fe12dda85741 = L.circleMarker(
+                [-23.551813, -46.657607],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+        var popup_4a7fabaca0f79d1436423541d485ca24 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ca508a29ae9b947d61122202138958c2 = $(`<div id="html_ca508a29ae9b947d61122202138958c2" style="width: 100.0%; height: 100.0%;">         <b>Linha:</b> 874T/10 IPIRANGA - LAPA (Sentido Volta)<br>         <b>Parada:</b> PEDRO TAQUES C/B<br>         <b>Endereço:</b> R CORONEL JOSE EUSEBIO/ R PEDRO TAQUES<br>         <b>Código:</b> 260016856     </div>`)[0];
+                popup_4a7fabaca0f79d1436423541d485ca24.setContent(html_ca508a29ae9b947d61122202138958c2);
+            
+        
+
+        circle_marker_3fd65b07a6db29347b14fe12dda85741.bindPopup(popup_4a7fabaca0f79d1436423541d485ca24)
+        ;
+
+        
+    
+    
+            circle_marker_3fd65b07a6db29347b14fe12dda85741.bindTooltip(
+                `<div>
+                     PEDRO TAQUES C/B
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bb11f2eb8eaec5118ecea36e16535839 = L.circleMarker(
+                [-23.525029, -46.690074],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+        var popup_78f35376196b62481589d7670073940c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e60eb7a48057e6373618c97ebcdfc6c2 = $(`<div id="html_e60eb7a48057e6373618c97ebcdfc6c2" style="width: 100.0%; height: 100.0%;">         <b>Linha:</b> 874T/10 IPIRANGA - LAPA (Sentido Volta)<br>         <b>Parada:</b> CORNELIA<br>         <b>Endereço:</b> R CLAUDIO/ R CRASSO<br>         <b>Código:</b> 480014614     </div>`)[0];
+                popup_78f35376196b62481589d7670073940c.setContent(html_e60eb7a48057e6373618c97ebcdfc6c2);
+            
+        
+
+        circle_marker_bb11f2eb8eaec5118ecea36e16535839.bindPopup(popup_78f35376196b62481589d7670073940c)
+        ;
+
+        
+    
+    
+            circle_marker_bb11f2eb8eaec5118ecea36e16535839.bindTooltip(
+                `<div>
+                     CORNELIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7c7af435eb55957b0386e234da89de50 = L.circleMarker(
+                [-23.523407, -46.700541],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+        var popup_b71214255d0c1e7b64defb63fc77976a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d9b9013cbd23bb56a154029768e50908 = $(`<div id="html_d9b9013cbd23bb56a154029768e50908" style="width: 100.0%; height: 100.0%;">         <b>Linha:</b> 874T/10 IPIRANGA - LAPA (Sentido Volta)<br>         <b>Parada:</b> CATAO B/C<br>         <b>Endereço:</b> R FAUSTOLO/ R ROMA<br>         <b>Código:</b> 480014961     </div>`)[0];
+                popup_b71214255d0c1e7b64defb63fc77976a.setContent(html_d9b9013cbd23bb56a154029768e50908);
+            
+        
+
+        circle_marker_7c7af435eb55957b0386e234da89de50.bindPopup(popup_b71214255d0c1e7b64defb63fc77976a)
+        ;
+
+        
+    
+    
+            circle_marker_7c7af435eb55957b0386e234da89de50.bindTooltip(
+                `<div>
+                     CATAO B/C
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_69bf445e0c845479c6005d110f089453 = L.circleMarker(
+                [-23.52517, -46.683408],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+        var popup_35902d2aecc4f9bfefdb7a0eb4a8b4b2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_51d556ef5086616545f223e44cb3ae99 = $(`<div id="html_51d556ef5086616545f223e44cb3ae99" style="width: 100.0%; height: 100.0%;">         <b>Linha:</b> 874T/10 IPIRANGA - LAPA (Sentido Volta)<br>         <b>Parada:</b> SESC POMPEIA B/C<br>         <b>Endereço:</b> R TURIASSU/ R BARAO DO BANANAL<br>         <b>Código:</b> 610014603     </div>`)[0];
+                popup_35902d2aecc4f9bfefdb7a0eb4a8b4b2.setContent(html_51d556ef5086616545f223e44cb3ae99);
+            
+        
+
+        circle_marker_69bf445e0c845479c6005d110f089453.bindPopup(popup_35902d2aecc4f9bfefdb7a0eb4a8b4b2)
+        ;
+
+        
+    
+    
+            circle_marker_69bf445e0c845479c6005d110f089453.bindTooltip(
+                `<div>
+                     SESC POMPEIA B/C
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_22e7fd7e98a901df0b97f599e90b040f = L.circleMarker(
+                [-23.532847, -46.657404],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+        var popup_9509df701ce298dbe702c14079693095 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d856b69c40b28cbaa2384531c3f13d8c = $(`<div id="html_d856b69c40b28cbaa2384531c3f13d8c" style="width: 100.0%; height: 100.0%;">         <b>Linha:</b> 874T/10 IPIRANGA - LAPA (Sentido Volta)<br>         <b>Parada:</b> ROSA E SILVA C/B<br>         <b>Endereço:</b> R OLIMPIA DE ALMEIDA PRADO/ R LOPES DE OLIVEIRA<br>         <b>Código:</b> 700006086     </div>`)[0];
+                popup_9509df701ce298dbe702c14079693095.setContent(html_d856b69c40b28cbaa2384531c3f13d8c);
+            
+        
+
+        circle_marker_22e7fd7e98a901df0b97f599e90b040f.bindPopup(popup_9509df701ce298dbe702c14079693095)
+        ;
+
+        
+    
+    
+            circle_marker_22e7fd7e98a901df0b97f599e90b040f.bindTooltip(
+                `<div>
+                     ROSA E SILVA C/B
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_88c66c7662569a6285ed44e6a2d68199 = L.circleMarker(
+                [-23.532068, -46.660957],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_1829808163d3a349c5846c850b226978);
+        
+    
+        var popup_3a4de80b9cfaf913713acdcf227da375 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_bcc68a0742822ef197bbf74cd06c196a = $(`<div id="html_bcc68a0742822ef197bbf74cd06c196a" style="width: 100.0%; height: 100.0%;">         <b>Linha:</b> 874T/10 IPIRANGA - LAPA (Sentido Volta)<br>         <b>Parada:</b> PACAEMBU B/C<br>         <b>Endereço:</b> R FRANCISCO ESTACIO FORTES/ AV PACAEMBU<br>         <b>Código:</b> 700016791     </div>`)[0];
+                popup_3a4de80b9cfaf913713acdcf227da375.setContent(html_bcc68a0742822ef197bbf74cd06c196a);
+            
+        
+
+        circle_marker_88c66c7662569a6285ed44e6a2d68199.bindPopup(popup_3a4de80b9cfaf913713acdcf227da375)
+        ;
+
+        
+    
+    
+            circle_marker_88c66c7662569a6285ed44e6a2d68199.bindTooltip(
+                `<div>
+                     PACAEMBU B/C
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>

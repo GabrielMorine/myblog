@@ -1,0 +1,1532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>blog</title>
+<link>https://your-website-url.example.com/</link>
+<atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
+<description>A blog built with Quarto</description>
+<generator>quarto-1.8.26</generator>
+<lastBuildDate>Sun, 23 Nov 2025 03:00:00 GMT</lastBuildDate>
+<item>
+  <title>Monitoramento SPTRANS</title>
+  <dc:creator>Gabriel Morine</dc:creator>
+  <link>https://your-website-url.example.com/posts/onibus/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Aqui está o código que mapeia quando executado, a posiçao reak do onibus, e suas paradas. O código começa com um .env onde está nosso token e a linha que vamos utilizar</p>
+<p>Bibiotecas usadas no código: <code>requests</code> <code>folium</code> <code>os</code> <code>dotenv</code></p>
+<div id="a95cd4c6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> requests</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> folium</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dotenv <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> load_dotenv</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"></span>
+<span id="cb1-7">load_dotenv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".env"</span>)</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">CODIGO_LINHA <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2506</span> </span>
+<span id="cb1-10"></span>
+<span id="cb1-11">s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> requests.Session()</span>
+<span id="cb1-12">token <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.getenv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'SPTRANS_TOKEN'</span>)</span>
+<span id="cb1-13"></span>
+<span id="cb1-14">s.post(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>token<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>&lt;Response [200]&gt;</code></pre>
+</div>
+</div>
+<p>Aqui as paradas:</p>
+<div id="221f3e20" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">res_paradas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> s.get(</span>
+<span id="cb3-2">    <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>CODIGO_LINHA<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb3-3">)</span>
+<span id="cb3-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> res_paradas.status_code <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span>:</span>
+<span id="cb3-5">    paradas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> res_paradas.json()</span>
+<span id="cb3-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb3-7">    paradas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span></code></pre></div></div>
+</div>
+<p>Posiçao real do onibus:</p>
+<div id="014b489b" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">res_posicao <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> s.get(</span>
+<span id="cb4-2">    <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>CODIGO_LINHA<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb4-3">)</span>
+<span id="cb4-4"></span>
+<span id="cb4-5">veiculos <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb4-6">hora_coleta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span></span>
+<span id="cb4-7"></span>
+<span id="cb4-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> res_posicao.status_code <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span>:</span>
+<span id="cb4-9">    dados_posicao <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> res_posicao.json()</span>
+<span id="cb4-10">    </span>
+<span id="cb4-11">    veiculos <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dados_posicao.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'vs'</span>, [])</span>
+<span id="cb4-12">    hora_coleta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dados_posicao.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'hr'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'-'</span>)</span></code></pre></div></div>
+</div>
+<p>Por ultimo a geração do mapa</p>
+<div id="26465361" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> paradas:</span>
+<span id="cb5-2">    lat_central <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(p[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'py'</span>] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> paradas) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(paradas)</span>
+<span id="cb5-3">    lon_central <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(p[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'px'</span>] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> paradas) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(paradas)</span>
+<span id="cb5-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb5-5">    lat_central, lon_central <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23.5489</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">46.6388</span></span>
+<span id="cb5-6"></span>
+<span id="cb5-7">m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> folium.Map(location<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[lat_central, lon_central], zoom_start<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">14</span>, tiles<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cartodbpositron"</span>)</span>
+<span id="cb5-8"></span>
+<span id="cb5-9"></span>
+<span id="cb5-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> paradas:</span>
+<span id="cb5-11">    folium.CircleMarker(</span>
+<span id="cb5-12">        location<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[p[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'py'</span>], p[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'px'</span>]],</span>
+<span id="cb5-13">        radius<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb5-14">        color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'red'</span>,</span>
+<span id="cb5-15">        fill<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,</span>
+<span id="cb5-16">        fill_color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'red'</span>,</span>
+<span id="cb5-17">        fill_opacity<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>,</span>
+<span id="cb5-18">        popup<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"&lt;b&gt;Parada:&lt;/b&gt; </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>p[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'np'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">&lt;br&gt;</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>p[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ed'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>,</span>
+<span id="cb5-19">        tooltip<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>p[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'np'</span>]</span>
+<span id="cb5-20">    ).add_to(m)</span>
+<span id="cb5-21"></span>
+<span id="cb5-22"></span>
+<span id="cb5-23"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> v <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> veiculos:</span>
+<span id="cb5-24">    popup_onibus <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"""</span></span>
+<span id="cb5-25"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        &lt;b&gt;Prefixo:&lt;/b&gt; </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>v[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'p'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">&lt;br&gt;</span></span>
+<span id="cb5-26"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        &lt;b&gt;Acessível:&lt;/b&gt; </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Sim'</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> v[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'a'</span>] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Não'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">&lt;br&gt;</span></span>
+<span id="cb5-27"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        &lt;b&gt;Horário da info:&lt;/b&gt; </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>hora_coleta<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb5-28"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb5-29">    </span>
+<span id="cb5-30">    folium.Marker(</span>
+<span id="cb5-31">        location<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[v[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'py'</span>], v[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'px'</span>]],</span>
+<span id="cb5-32">        popup<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>popup_onibus,</span>
+<span id="cb5-33">        tooltip<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Ônibus </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>v[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'p'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>,</span>
+<span id="cb5-34">        icon<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>folium.Icon(color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'green'</span>, icon<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bus'</span>, prefix<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'fa'</span>)</span>
+<span id="cb5-35">    ).add_to(m)</span>
+<span id="cb5-36"></span>
+<span id="cb5-37"></span>
+<span id="cb5-38">m</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
+    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
+    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
+    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
+    
+            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
+            <style>
+                #map_ce785d78bdf2c25a104295f3e1a393ce {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class=&quot;folium-map&quot; id=&quot;map_ce785d78bdf2c25a104295f3e1a393ce&quot; ></div>
+        
+</body>
+<script>
+    
+    
+            var map_ce785d78bdf2c25a104295f3e1a393ce = L.map(
+                &quot;map_ce785d78bdf2c25a104295f3e1a393ce&quot;,
+                {
+                    center: [-23.5299502, -46.6715388],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 14,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_37b3b565f334fbfb0e36154cbc3d79eb = L.tileLayer(
+                &quot;https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 20,
+  &quot;maxNativeZoom&quot;: 20,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\&quot;https://carto.com/attributions\&quot;\u003eCARTO\u003c/a\u003e&quot;,
+  &quot;subdomains&quot;: &quot;abcd&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_37b3b565f334fbfb0e36154cbc3d79eb.addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+            var circle_marker_f83662d30f24f06451ca3e3f4a278848 = L.circleMarker(
+                [-23.534564, -46.654302],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_969ede57995241164167af893969aea3 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_4ab9b77b45ede86af1fa4ed6fe297dbd = $(`<div id=&quot;html_4ab9b77b45ede86af1fa4ed6fe297dbd&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANGELICA B/C<br>AV   ANGELICA</div>`)[0];
+                popup_969ede57995241164167af893969aea3.setContent(html_4ab9b77b45ede86af1fa4ed6fe297dbd);
+            
+        
+
+        circle_marker_f83662d30f24f06451ca3e3f4a278848.bindPopup(popup_969ede57995241164167af893969aea3)
+        ;
+
+        
+    
+    
+            circle_marker_f83662d30f24f06451ca3e3f4a278848.bindTooltip(
+                `<div>
+                     ANGELICA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_8679a90939bbf452486ab9f7ed68d660 = L.circleMarker(
+                [-23.525799, -46.679251],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_a6ee7619905125f55274504114f15420 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_83657e0ed4935dfe179a2f690ba2566e = $(`<div id=&quot;html_83657e0ed4935dfe179a2f690ba2566e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PARADA PALMEIRAS B/C<br>R PADRE ANTONIO TOMAS/ AV POMPEIA</div>`)[0];
+                popup_a6ee7619905125f55274504114f15420.setContent(html_83657e0ed4935dfe179a2f690ba2566e);
+            
+        
+
+        circle_marker_8679a90939bbf452486ab9f7ed68d660.bindPopup(popup_a6ee7619905125f55274504114f15420)
+        ;
+
+        
+    
+    
+            circle_marker_8679a90939bbf452486ab9f7ed68d660.bindTooltip(
+                `<div>
+                     PARADA PALMEIRAS B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_a634169fe635efe8b335d5f8b91436de = L.circleMarker(
+                [-23.526523, -46.673588],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_d4572f80d63ac0eb910709a13052e151 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_c01af8a145a2e892788c4c8d86838fc2 = $(`<div id=&quot;html_c01af8a145a2e892788c4c8d86838fc2&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANTARTICA B/C<br>PC SOUSA ARANHA/ VDTO ANTARTICA</div>`)[0];
+                popup_d4572f80d63ac0eb910709a13052e151.setContent(html_c01af8a145a2e892788c4c8d86838fc2);
+            
+        
+
+        circle_marker_a634169fe635efe8b335d5f8b91436de.bindPopup(popup_d4572f80d63ac0eb910709a13052e151)
+        ;
+
+        
+    
+    
+            circle_marker_a634169fe635efe8b335d5f8b91436de.bindTooltip(
+                `<div>
+                     ANTARTICA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_da542d217502db6ef230ce3dfcfadb16 = L.circleMarker(
+                [-23.528131, -46.670652],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_1f99e32487763a566ae37bee75a34d94 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_afe7d0a766b5fe03a23c741fb720f47a = $(`<div id=&quot;html_afe7d0a766b5fe03a23c741fb720f47a&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> BABY BARIONY B/C<br>R DONA GERMAINE BUCHARD/ R MINISTRO GODOI</div>`)[0];
+                popup_1f99e32487763a566ae37bee75a34d94.setContent(html_afe7d0a766b5fe03a23c741fb720f47a);
+            
+        
+
+        circle_marker_da542d217502db6ef230ce3dfcfadb16.bindPopup(popup_1f99e32487763a566ae37bee75a34d94)
+        ;
+
+        
+    
+    
+            circle_marker_da542d217502db6ef230ce3dfcfadb16.bindTooltip(
+                `<div>
+                     BABY BARIONY B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_33ab47066462445f5aea08364131034d = L.circleMarker(
+                [-23.53021, -46.6669],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_62a1fba7f5bbf1ee17c75ef3e9234396 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_4eb821c28bb408800f5f104aded71f0f = $(`<div id=&quot;html_4eb821c28bb408800f5f104aded71f0f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PQ. DA ÁGUA BRANCA B/C<br>R MINISTRO GODOI/ R LINCOLN ALBUQUERQUE</div>`)[0];
+                popup_62a1fba7f5bbf1ee17c75ef3e9234396.setContent(html_4eb821c28bb408800f5f104aded71f0f);
+            
+        
+
+        circle_marker_33ab47066462445f5aea08364131034d.bindPopup(popup_62a1fba7f5bbf1ee17c75ef3e9234396)
+        ;
+
+        
+    
+    
+            circle_marker_33ab47066462445f5aea08364131034d.bindTooltip(
+                `<div>
+                     PQ. DA ÁGUA BRANCA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_e59ee2119ccf475399d64033005d8cef = L.circleMarker(
+                [-23.52494, -46.698995],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_ef545a910b0f1502ca73b7172ab620ba = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_cc5182b254169d4f120686bf80d95641 = $(`<div id=&quot;html_cc5182b254169d4f120686bf80d95641&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SCIPIAO B/C<br>R SCIPIAO/ R AURELIA</div>`)[0];
+                popup_ef545a910b0f1502ca73b7172ab620ba.setContent(html_cc5182b254169d4f120686bf80d95641);
+            
+        
+
+        circle_marker_e59ee2119ccf475399d64033005d8cef.bindPopup(popup_ef545a910b0f1502ca73b7172ab620ba)
+        ;
+
+        
+    
+    
+            circle_marker_e59ee2119ccf475399d64033005d8cef.bindTooltip(
+                `<div>
+                     SCIPIAO B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_32cea5f4da1c8fe930d7eb5e01710448 = L.circleMarker(
+                [-23.524994, -46.695297],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_49c671da8d4f56fb9ec1096478d13163 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_d30550d96fc876c6eadd88073142dad6 = $(`<div id=&quot;html_d30550d96fc876c6eadd88073142dad6&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VESPASIANO B/C<br>R VESPASIANO/ R CAIO GRACO</div>`)[0];
+                popup_49c671da8d4f56fb9ec1096478d13163.setContent(html_d30550d96fc876c6eadd88073142dad6);
+            
+        
+
+        circle_marker_32cea5f4da1c8fe930d7eb5e01710448.bindPopup(popup_49c671da8d4f56fb9ec1096478d13163)
+        ;
+
+        
+    
+    
+            circle_marker_32cea5f4da1c8fe930d7eb5e01710448.bindTooltip(
+                `<div>
+                     VESPASIANO B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_4827e4636731f5128184db14ed512d1a = L.circleMarker(
+                [-23.525029, -46.690074],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_99d4f77204ed252af702b5808f84da14 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_aade3f843062ec489e45d722a807ce7d = $(`<div id=&quot;html_aade3f843062ec489e45d722a807ce7d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CORNELIA<br>R CLAUDIO/ R CRASSO</div>`)[0];
+                popup_99d4f77204ed252af702b5808f84da14.setContent(html_aade3f843062ec489e45d722a807ce7d);
+            
+        
+
+        circle_marker_4827e4636731f5128184db14ed512d1a.bindPopup(popup_99d4f77204ed252af702b5808f84da14)
+        ;
+
+        
+    
+    
+            circle_marker_4827e4636731f5128184db14ed512d1a.bindTooltip(
+                `<div>
+                     CORNELIA
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_c815bce3b2e835edf15ed5d09aeee6ae = L.circleMarker(
+                [-23.523407, -46.700541],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_e8899f520c41033f56f56190ecd5797e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_d5a99d4140fb6f6ba5e99fb2b733044d = $(`<div id=&quot;html_d5a99d4140fb6f6ba5e99fb2b733044d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CATAO B/C<br>R FAUSTOLO/ R ROMA</div>`)[0];
+                popup_e8899f520c41033f56f56190ecd5797e.setContent(html_d5a99d4140fb6f6ba5e99fb2b733044d);
+            
+        
+
+        circle_marker_c815bce3b2e835edf15ed5d09aeee6ae.bindPopup(popup_e8899f520c41033f56f56190ecd5797e)
+        ;
+
+        
+    
+    
+            circle_marker_c815bce3b2e835edf15ed5d09aeee6ae.bindTooltip(
+                `<div>
+                     CATAO B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_f5fb47a9f0a178f09649d5a842e92368 = L.circleMarker(
+                [-23.52517, -46.683408],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_9972e23963b69c9949df68176eac0e67 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_ae911e7cfd4992efe870e2948d6fae1e = $(`<div id=&quot;html_ae911e7cfd4992efe870e2948d6fae1e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SESC POMPEIA B/C<br>R TURIASSU/ R BARAO DO BANANAL</div>`)[0];
+                popup_9972e23963b69c9949df68176eac0e67.setContent(html_ae911e7cfd4992efe870e2948d6fae1e);
+            
+        
+
+        circle_marker_f5fb47a9f0a178f09649d5a842e92368.bindPopup(popup_9972e23963b69c9949df68176eac0e67)
+        ;
+
+        
+    
+    
+            circle_marker_f5fb47a9f0a178f09649d5a842e92368.bindTooltip(
+                `<div>
+                     SESC POMPEIA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_3057c11d77da11bba6683404f59475f5 = L.circleMarker(
+                [-23.540545, -46.643624],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_57f6794ed08075a946ce51252d1422f5 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_c11241831db9141b92f9b94890b4f73e = $(`<div id=&quot;html_c11241831db9141b92f9b94890b4f73e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VITORIA B/C<br>R VITORIA/ AL BARAO DE CAMPINAS</div>`)[0];
+                popup_57f6794ed08075a946ce51252d1422f5.setContent(html_c11241831db9141b92f9b94890b4f73e);
+            
+        
+
+        circle_marker_3057c11d77da11bba6683404f59475f5.bindPopup(popup_57f6794ed08075a946ce51252d1422f5)
+        ;
+
+        
+    
+    
+            circle_marker_3057c11d77da11bba6683404f59475f5.bindTooltip(
+                `<div>
+                     VITORIA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_4282eebb6245d45b080ff1a051cecb86 = L.circleMarker(
+                [-23.532847, -46.657404],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_e8d706c059fff182b1e8b5c417a36714 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_bc7ecaa1be456d870c02ee498410a17d = $(`<div id=&quot;html_bc7ecaa1be456d870c02ee498410a17d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ROSA E SILVA C/B<br>R OLIMPIA DE ALMEIDA PRADO/ R LOPES DE OLIVEIRA</div>`)[0];
+                popup_e8d706c059fff182b1e8b5c417a36714.setContent(html_bc7ecaa1be456d870c02ee498410a17d);
+            
+        
+
+        circle_marker_4282eebb6245d45b080ff1a051cecb86.bindPopup(popup_e8d706c059fff182b1e8b5c417a36714)
+        ;
+
+        
+    
+    
+            circle_marker_4282eebb6245d45b080ff1a051cecb86.bindTooltip(
+                `<div>
+                     ROSA E SILVA C/B
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b = L.circleMarker(
+                [-23.538708, -46.646888],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_b607383d0a55cf23aa3d84ca4bdb05af = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_a9cfb878d2ea98ac0802d48ae24a0f3f = $(`<div id=&quot;html_a9cfb878d2ea98ac0802d48ae24a0f3f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANA CINTRA B/C<br>R DOUTOR FREDERICO STEIDEL/ AV DUQUE DE CAXIAS</div>`)[0];
+                popup_b607383d0a55cf23aa3d84ca4bdb05af.setContent(html_a9cfb878d2ea98ac0802d48ae24a0f3f);
+            
+        
+
+        circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b.bindPopup(popup_b607383d0a55cf23aa3d84ca4bdb05af)
+        ;
+
+        
+    
+    
+            circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b.bindTooltip(
+                `<div>
+                     ANA CINTRA B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_e99858cdb6d6f60a282f6163327a346f = L.circleMarker(
+                [-23.532068, -46.660957],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_4337f6fddc630e8cf83f45e59cfbc09b = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_8624535a956345d3333a44ad65741470 = $(`<div id=&quot;html_8624535a956345d3333a44ad65741470&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PACAEMBU B/C<br>R FRANCISCO ESTACIO FORTES/ AV PACAEMBU</div>`)[0];
+                popup_4337f6fddc630e8cf83f45e59cfbc09b.setContent(html_8624535a956345d3333a44ad65741470);
+            
+        
+
+        circle_marker_e99858cdb6d6f60a282f6163327a346f.bindPopup(popup_4337f6fddc630e8cf83f45e59cfbc09b)
+        ;
+
+        
+    
+    
+            circle_marker_e99858cdb6d6f60a282f6163327a346f.bindTooltip(
+                `<div>
+                     PACAEMBU B/C
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_marker_3fec9624338be40444c3e101a829bf26 = L.circleMarker(
+                [-23.536318, -46.651201],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+        var popup_a5f2bc3702cfaf25ca71a50b506c4c42 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_ab38ee7af230ef507e4718926b8ae620 = $(`<div id=&quot;html_ab38ee7af230ef507e4718926b8ae620&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> NOTHMANN C/B<br>R GENERAL JULIO MARCONDES SALGADO/ AL NOTHMANN</div>`)[0];
+                popup_a5f2bc3702cfaf25ca71a50b506c4c42.setContent(html_ab38ee7af230ef507e4718926b8ae620);
+            
+        
+
+        circle_marker_3fec9624338be40444c3e101a829bf26.bindPopup(popup_a5f2bc3702cfaf25ca71a50b506c4c42)
+        ;
+
+        
+    
+    
+            circle_marker_3fec9624338be40444c3e101a829bf26.bindTooltip(
+                `<div>
+                     NOTHMANN C/B
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var marker_3b7159b385e88eead5aee2f665747738 = L.marker(
+                [-23.52501625, -46.685184250000006],
+                {
+}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+            var icon_eb8b9263429400707ca06c51aaa0a513 = L.AwesomeMarkers.icon(
+                {
+  &quot;markerColor&quot;: &quot;green&quot;,
+  &quot;iconColor&quot;: &quot;white&quot;,
+  &quot;icon&quot;: &quot;bus&quot;,
+  &quot;prefix&quot;: &quot;fa&quot;,
+  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
+}
+            );
+        
+    
+        var popup_6a75c9077761376b644c0764f3dd3b0f = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_5b654fa4238053ad2c1029e09d945777 = $(`<div id=&quot;html_5b654fa4238053ad2c1029e09d945777&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12613<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 21:07     </div>`)[0];
+                popup_6a75c9077761376b644c0764f3dd3b0f.setContent(html_5b654fa4238053ad2c1029e09d945777);
+            
+        
+
+        marker_3b7159b385e88eead5aee2f665747738.bindPopup(popup_6a75c9077761376b644c0764f3dd3b0f)
+        ;
+
+        
+    
+    
+            marker_3b7159b385e88eead5aee2f665747738.bindTooltip(
+                `<div>
+                     Ônibus 12613
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+                marker_3b7159b385e88eead5aee2f665747738.setIcon(icon_eb8b9263429400707ca06c51aaa0a513);
+            
+    
+            var marker_9534571e987c12333a6ee328663aed89 = L.marker(
+                [-23.547649, -46.641011500000005],
+                {
+}
+            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+        
+    
+            var icon_96b918e9b884903f132edcf3af16c7eb = L.AwesomeMarkers.icon(
+                {
+  &quot;markerColor&quot;: &quot;green&quot;,
+  &quot;iconColor&quot;: &quot;white&quot;,
+  &quot;icon&quot;: &quot;bus&quot;,
+  &quot;prefix&quot;: &quot;fa&quot;,
+  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
+}
+            );
+        
+    
+        var popup_d433c60325c72c7ef85834151f7b3a7d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_851b32ca16a70223bce6e0bda1a0c411 = $(`<div id=&quot;html_851b32ca16a70223bce6e0bda1a0c411&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12685<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 21:07     </div>`)[0];
+                popup_d433c60325c72c7ef85834151f7b3a7d.setContent(html_851b32ca16a70223bce6e0bda1a0c411);
+            
+        
+
+        marker_9534571e987c12333a6ee328663aed89.bindPopup(popup_d433c60325c72c7ef85834151f7b3a7d)
+        ;
+
+        
+    
+    
+            marker_9534571e987c12333a6ee328663aed89.bindTooltip(
+                `<div>
+                     Ônibus 12685
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+                marker_9534571e987c12333a6ee328663aed89.setIcon(icon_96b918e9b884903f132edcf3af16c7eb);
+            
+</script>
+</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <category>onibus</category>
+  <category>código</category>
+  <category>python</category>
+  <guid>https://your-website-url.example.com/posts/onibus/</guid>
+  <pubDate>Sun, 23 Nov 2025 03:00:00 GMT</pubDate>
+  <media:content url="https://your-website-url.example.com/posts/onibus/download.png" medium="image" type="image/png" height="69" width="144"/>
+</item>
+<item>
+  <title>Regressão Linear</title>
+  <dc:creator>Gabriel Morine</dc:creator>
+  <link>https://your-website-url.example.com/posts/post-regressao-linear/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Esse é um código que calcula a regressão linear entre anos de estudo e salário. A primeira parte peguei as informações do txt e transformei em um tipo de dado que o plotly conseguiria ler com a biblioteca <code>pandas</code>.</p>
+<div id="2e3e4a7c" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> statsmodels.api <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> sm</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> px</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> plotly.graph_objects <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> go</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">valores_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>(x.strip()) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"C:</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">VS_SITEPY</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">blog</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">x.txt"</span>)]</span>
+<span id="cb1-7">valores_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>(y.strip()) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> y <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"C:</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">VS_SITEPY</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">blog</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">y.txt"</span>)]</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame({<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ano"</span>: valores_x, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"salario"</span>: valores_y})</span></code></pre></div></div>
+</div>
+<p>Regressão Linear:</p>
+<div id="d7f66f03" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">X <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sm.add_constant(df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ano"</span>])</span>
+<span id="cb2-2">modelo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sm.OLS(df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"salario"</span>], X).fit()</span>
+<span id="cb2-3"></span>
+<span id="cb2-4">a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> modelo.params[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"const"</span>]</span>
+<span id="cb2-5">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> modelo.params[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ano"</span>]</span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Intercepto (a):"</span>, a)</span>
+<span id="cb2-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Inclinação (b):"</span>, b)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercepto (a): 373.93446839130297
+Inclinação (b): 991.6278332981968</code></pre>
+</div>
+</div>
+<p>Gráfico no <code>Plotly</code>:</p>
+<div id="1f2adc00" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">fig <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> go.Figure()</span>
+<span id="cb4-2"></span>
+<span id="cb4-3"></span>
+<span id="cb4-4">fig.add_trace(go.Scatter(</span>
+<span id="cb4-5">    x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ano"</span>],</span>
+<span id="cb4-6">    y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"salario"</span>],</span>
+<span id="cb4-7">    mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"markers"</span>,</span>
+<span id="cb4-8">    name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dados"</span>,</span>
+<span id="cb4-9">))</span>
+<span id="cb4-10"></span>
+<span id="cb4-11"></span>
+<span id="cb4-12">df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"reta"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ano"</span>]</span>
+<span id="cb4-13"></span>
+<span id="cb4-14">fig.add_trace(go.Scatter(</span>
+<span id="cb4-15">    x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ano"</span>],</span>
+<span id="cb4-16">    y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"reta"</span>],</span>
+<span id="cb4-17">    mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lines"</span>,</span>
+<span id="cb4-18">    name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Regressão Linear"</span>,</span>
+<span id="cb4-19">))</span>
+<span id="cb4-20"></span>
+<span id="cb4-21">fig.update_layout(</span>
+<span id="cb4-22">    title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Regressão Linear Salário/Ano"</span>,</span>
+<span id="cb4-23">    xaxis_title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ano"</span>,</span>
+<span id="cb4-24">    yaxis_title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Salário"</span>,</span>
+<span id="cb4-25">)</span>
+<span id="cb4-26"></span>
+<span id="cb4-27">fig </span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="7cec3367-d184-4621-9cc8-569fed5af849" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("7cec3367-d184-4621-9cc8-569fed5af849")) {                    Plotly.newPlot(                        "7cec3367-d184-4621-9cc8-569fed5af849",                        [{"mode":"markers","name":"Dados","x":{"dtype":"f8","bdata":"MqLmaH0A8D\u002f7nqeKxU3wP7wvnDIIYfA\u002fZiKJlD9h8D+bvtDYV2HwP8K61dhXYfA\u002f19T2aSuA8D9GgsJaG0vxP65swvgjS\u002fE\u002fei+V2wtV8T9MOpt+HFbxP36ZgyURdfE\u002fMguE8jV18T8QjY9NRePxP5ttNzeRLfI\u002fhs43N5Et8j8iamaDuXTyPwkslGzddPI\u002fr7eR6eZ08j9lNNLp5nTyP\u002fQQuIvndPI\u002fwJs1payt8j8T+S2qrK3yPylTkEcnj\u002fM\u002fv+1dVSeP8z+r1vZk9CD1P0MfX+dDyfY\u002fO3ktKkTJ9j\u002fQmKFQiQT3P8ogteT1Mfc\u002fnuXAeRAy9z\u002fKUHftmDL3P6CI8KzYQfg\u002fSFmG6D3m+z\u002fEtNwAsPn7P\u002fyGCTGwAvw\u002fzGVkih+E\u002fT8bZNmeHqP9P4M7H1Ai1ABAHGA7bCLUAECM51NqsdQAQMXmu0CPIwFAZxBaTv8nAUD3mp1O\u002fycBQFJDpMqrSQFAz1rP3aNKAUA+JR\u002fRBFgBQFfAkc90cQFAI\u002fU2ZLJ6AkDD9sfLNYMCQIqdaLmRDgBA7g\u002fITPe9AECbXRcBZMwAQK13jTwGKgJA4zIkI90rAkCSPbKx3SsCQCOCx7TdKwJAqPnrzd0rAkCO3bW8NS8CQPZkfbebpANAmQSsg7WmA0DyYhej6PIDQIcGQdOw3gRA2Xi\u002fZ9JbBUAFku8\u002f6lsFQE\u002fPBLiOGwZAdZIKp20kBkB3WvjjbSQGQBF5DH6cJAZAi8Haail1BkDlruBqKXUGQH9mfpUqdQZAX6zy5St1BkBB9AD+LXUGQFlee1yMegZAdY7NL158BkD1tc0vXnwGQM752hygmAZAgdYcw0yZBkD80H8ZoJkGQO4QRHvi6AdAkczQTQztB0BMvu5opTUIQGhwrSDwSwhADmuLZvBLCEBdJaibFk0JQPqYNmj8ZgpAdw+j9Ya0C0DM\u002fasIEfcLQEYy73YS9wtAq9n6ABP3C0Amz8mTwhcMQCRJ86E+HQxAxNqHmn8dDECvi0yYYPkMQECwzw8XxQ5AmWRXlyWFD0AQUtZBrpEPQEwPKTK2kQ9Ai12hQX\u002fRD0AFaIGtADIIQMDbsIYIMghAbM35fDk4CEAIrsh71zgIQIMAynvXOAhATmkBvcc+CEAQ44DEt2kIQIrJT823aQhArJx8veHKCkDKQGoH4soKQDPIPV8S+wpAJ1zjlK3\u002fCkC\u002fXtqBwCELQNBilytO\u002fwxAjIym4KwwDUCbKL6PK5UNQLDsjPPplg1Aekyuq9SZDUAQI4oVRaQOQMDRM\u002foKHQ9A7H2TCZaED0Df4Ymmn4QPQDmLD5GMhRBAKV6+uuUdEUDydB9TCSIRQMV7IlMJIhFAezoLyn4kEUCF9FrYISURQF1Wdnw\u002fJhFAZmmnJVMmEUASNEQFtiYRQFua2QW2JhFAqp739jNAEUAMSE1aPqkRQK6fX30+qRFAu3qiD1ipEUDvF9Y8MwwSQC5ckqxrThJAlMLKVeNPEkBs\u002fMpV408SQNyIt8z6aBJAbrSIofSGEkBULAZa9oYSQBThUQj9hhJAFUYuX4ACE0AYgXODFOkTQGyxlQsg6RNA2\u002fLDCyDpE0Ah27nXQukTQHK\u002fQbJm6RNApx5cdQEAEECTmQTXrTcQQKiRXrwVWBBAsbM9z85TEUARINcs4FQRQPAe7rTziRFAyFOyRD+KEUCP\u002faEMiooRQNItfgzgjBFA\u002fKlplmoKEkDln8K5WlASQEZqW3vbYBJAoQUv\u002fNtgEkA1jBv922ASQKkJyYJ23BJAvzPbblbdEkAI\u002fcNLV94SQIvG4KB+3hJAGUg1iWsKE0Bs9IOH7QwTQJ4ipbOnDRNAIbvfd6YPE0B+gVOSXxATQPsELOi7FRNAN7GvadtmE0A1bcDENv8TQGwO56FADhRAUeVpzkgOFEAckJV0ug4UQIth7IcqFxRAKZH24k0aFEBETG5iYzkUQERMbmJjORRAed9OvLRAFEB53068tEAUQKVhO9dOQRRA62Cc9lBBFEBbrW+58UcUQMTSIObxRxRA5EaaWbxcFED2kI6a1l8UQBjyCafXXxRAEovTPazIFECWqg0vSckUQA1puJMp1xRAAJJhFkXXFEDPB5YWRdcUQJfINPytvxVAl+EPbbK\u002fFUAjQmVGs78VQCEQrPluHhRAM+6q3zKUFED5VD2oH8kUQH305yEgyRRAzKd7w23JFEAqaMZnb8kUQCJgzsY9zxRATCJVeEXPFEDqoqDuVs8UQDGFC4mQzxRA6bMVvJnPFECogjlw9c8UQBoEUwsI0BRAT25plUbVFEA7HAtkr9gUQHpIPKgV3RRA0+J6WdDdFEAz2OYE290UQJzxTjHc3RRARfX4rt3dFEAtEskj3t0UQOBb5x7ULBVAkQmvm9csFUBID6+b1ywVQHzGwqpRLRVAQp7DqlEtFUAQ8xqrUS0VQOEkBIp4LRVA51ClF7AtFUALWCrPITcVQDLGgDcmNxVA9HQNP\u002fA3FUAbaA1QajkVQCtK2S9uORVAe71rAtFUFUDsI\u002fc6xJMVQN8H8TEHgBZAG\u002f+TjzSvFkC9tCYMea8WQCkTJ3F7rxZAXAxWgnuvFkB4JbvW0FEXQLyiWu\u002fQURdASN4xuLUJGEDxkRd9WB8YQOiE8i\u002fdIRhA+QwA0nIwGEBeeeJUdkoYQD3HGoET\u002fBhATWkvoxv8GEALPAojAAAYQC7SHCQAABhA8uNOduoVGEC8QCoXrIwYQKU+Cu\u002ffpxhAzfe2wDmvGUACmlF4PK8ZQFZa4bRsGhpAeETGwmwaGkAxVF0U4SwaQHXqIrbliBpAtE2zDD2xGkDe\u002fNJ\u002fPrEaQN780n8+sRpAuwEtRD+xGkDn6jJEP7EaQIz3baY\u002fsRpAYP4qntzFGkBVsDD0K8YaQM7CPk0txhpADrqKTS3GGkDPK2npLgIbQF+VHiqUJRtAK4PL2ZcnG0B03fKwASobQJTs\u002fJJq3xtAuVquuTayHEAFT6W7NrIcQACj163xshxA\u002fHO7MTKzHEAQ7OdjtLMcQEq4uOAcMh1A3FEw9iNNHkAzI1O1bk0eQFnRgThvTR5AL3hdUcVNHkDbRd8Nl7AeQDDfUvNisx5AMN9S82KzHkApZqZkxLMeQF7zp\u002fTGQB9AwB4KztRAH0A1oVwAg7MfQO6BYgGKsx9ASFtCQMkVIEC00XxAyRUgQDL2wtrJFSBAqxeVdhgoIEDXpmCHGCggQPlYss2eNyBAj8TUJc5sHEDXo3+ekuEcQFAEG9KYJB1AcjSHOHZ0HUD3A53NdCQeQFYyFePx3B5Akwx4D\u002fLcHkBFp\u002f5NIBMfQByMkI7\u002fGx9AbHdGcTq0H0AFNRrcYzAgQIykYMzYMCBAAbIxdwyhIEBeit6Ukr8gQNR8O8CdvyBArVHLMp+\u002fIECtVDr9s78gQEMTGNSGGiFAeoHJ9IYaIUAKttdqkhwhQI7hcW6SHCFA0Xwur9IdIUD2QBTeLx4hQEVJ1\u002fzzJCFA+OhxfnAsIUAJ9gV\u002fcCwhQL6L4EkKMiFAvovgSQoyIUD7i6+dCjIhQI2HKIkTMiFAjzMzixMyIUBCf0WqEzIhQCi\u002fFBR9SyFAYXGpfX1LIUDFmgDGfUshQO70AKKoeCFAYIpXoqh4IUA1A2L\u002fU5AhQLi6\u002fNxpkCFAfE9z7amQIUC1a94gzPAhQG6PbTQwEiJAzVNIwwpmIkAfombix28iQLF00A\u002fKbyJAIwRrTrNwIkAk2z3CO3MiQD9Hp2ArgCJA9pO0+JmFIkDp24bE79IiQK3+Uyk\u002fBSBAqN9OPoAZIEAQONsyhBkgQHgBnxGOLyBACJ9\u002f29o9IEDl0Yvh2j0gQFSx3YjwPSBAEBKNHwdCIEBs5ODo9HIgQE\u002ftXer0ciBAPr3pGCePIEACCZB1ZZIgQPqf5nVlkiBAOFbiVtiTIEB7IZYh55MgQAwDcih6mCBAO23ePNyYIEAfN71h3JggQN0M1\u002f7cmCBAndWL4d6bIEAqTRCIt7QgQFLet6URuCBAXPSBixO4IECaVJddy7kgQESkLpMtuiBAIXbslS26IED+qF1LFu8gQBJ0ch4DDyFAHp6SWHQQIUDDc6ZYdBAhQLUfc7mFHCFAiuxXo\u002fEpIUAMb4Wj8SkhQIPuR28waiFAP1xQ1m5tIUBFcg6o63ghQEigYhYXgiFAuw3mrxiCIUB49vBt6uUhQKChIcMD6yFAMBXuz6v1IUD4+vKvBvkhQF2kUkoq+SFAwmxiNkEMIkAktJciTwwiQCpRsMbonCJABrkCubesIkCkvIYW4qwiQPus0TwErSJAHq3RPAStIkCZpN4kMAAiQE\u002fWMSUwACJADDR5H19YIkCIGsYuZVgiQKV1KID0WCJAzEoIM9JaIkCJACsl1lsiQOFZL9WWYiJAfpQmDIyTIkDSlkwMjJMiQD4PTQyMkyJAzvhNFY6TIkB0SCfinZQiQEUNtnfGlCJApy4vhA+VIkAeemRwwZUiQAU\u002fmUOz0yJA8cDGRzAiI0AysxnC6yUjQIbGVRjEKiNA+xJuOcQqI0BhaDUi0yojQA8IuAgWKyNADwi4CBYrI0CcOs1hjCsjQKGYPSTVPyNAQcTbxVOaI0DuhdlM25ojQAz\u002foI7eoSNAk46ay+OiI0A3wvXPPb4jQImWrHDP6iNAvkivl8\u002fqI0BoU0x7SCAkQGWnaXtIICRAI+dkwHlMJECJ45jAeUwkQDMXPf3ipCRAmfOplFuxJEAajC5aa78kQKQBaGFsvyRAwJiWP\u002fEEJUAMSlAR4wwlQGos3kQgDSVA\u002fXHeRy4NJUAD5NHqeiElQLgcGe16ISVAGhdvzjtRJUDSgVSXI4clQIzsHaAkhyVArlQXpJYAJEAJKvszmwAkQNQ3UGQEASRAEOKIweIEJEAUaJdl5wUkQM5NhYmpCiRAF83q6soRJEA1SfLryhEkQJcHp4TMESRAcpuPNBheJEC\u002f4JTSimskQLSwyuOVnSRASLHK45WdJEAPelLRorAkQLd9UtGisCRAF1jGN7OwJEC+8cFdSOAkQMHVURAL7iRA\u002f60ScGMSJUALS2KJ0xclQNJcJy7UGCVAQkVn5dQYJUAu61oP1RglQNgQnRLVGCVAYk8Dp9wYJUAg+fYd3xglQBgYbdGuMSVA+8Us5IyWJUBgRJNKjZYlQHVEk0qNliVAbFZhqHaoJUBqtkjyv7clQDoPvXH2wCVApVbbhy7lJUB3iJvQ3SAmQH0O7Ck9IiZAIY2ylgcjJkDNqOCsECYmQPMLKvFFsCZAEvIRCkawJkBLWNZfHLEmQEZTdRMKsyZATx2aqgqzJkAHDL2qCrMmQD7\u002fp9IMsyZACwOo0gyzJkB+Ki\u002fIFrMmQAL23T8xsyZAz+tYajGzJkCrr6kRRLMmQIl4EI4LACZAPPA1NwwAJkB6ePS9NR0mQLEJ6ug1HSZAhxpj6zUdJkDxRdpKxh0mQEzTQqodVSZAP1QNLt5YJkBpmuks+WAmQNkmWzyetCZAG\u002fgkN8y9JkATQvdsYNAmQK3TdfN91CZAruKgx+rVJkC+kHiOFOQmQEOheI4U5CZAD0NfTBtDJ0APPuIeiZ4nQDSOOY+snidAB7ZBchqfJ0A2XO6oww4oQJoXAAdcFShA0Wga8SEjKECdm11tIiMoQLj4DpgiIyhArjo70CIjKECRVILWIiMoQJ22ZOefMShAa5SAWvg4KEBNCGItjKsoQM9orL2qqyhA06VB5eWrKEBSFuA4BawoQPo0pFRZrihAi96kVFmuKEBsxnjBRNIoQKlEe8VE0ihAbCFualzSKEDqwdt2lxgpQCqu\u002fJXUqilAzLschzS0KUDcwi7xqeopQDm9k\u002fy67ClARnESRW95KkAwAsYmV5cqQKwGoIvlnypAMikwtY6nKkDnCLrTFLsqQLRvzgzxuypASSwphcfBKkCUAAAAAAAoQBVSEMd4AyhAQXBBWNIDKECqWQ\u002f02QMoQDNfD\u002fTZAyhAWUGe9tkDKEAZy7gMUAQoQCXLuAxQBChAFv+eAvEdKEDesa8gNx4oQJOR1Fg6HihAffZrS0AeKEDQblcQTh4oQA2\u002fm7hOHihAKS0zLNc7KEBYk0D61zsoQLpzOYWLPyhA1UIyPe1NKEAVaw9ZWk4oQILTiVlaTihAL0sF2FpOKEAaazkUsFQoQB0stCWyVChAhUkAY\u002fBUKEAgLWDlF1UoQBWkkx+KVyhAP4sBkJBXKEB8Tbhco1coQMkGHl2jVyhA8AfCXaNXKEAE2EgcwlsoQOJX56G5mChAshNMHdvgKEAfVfZfrEIpQK7eEQ42UilAHAi4JkFUKUAFEcgmQVQpQJBxo03OVClAZxgMvD1WKUDTKzO1g2IpQHdYQxGIYilAxYIKk+yMKUDFGcY8dacpQC1HAhroqylACSAmGuirKUAgSwLG8aspQAd\u002fqpqorilAshXrdIKvKUBivPfJla8pQCKnmizRrylA8JWQ6ZJhKkA3ZrCjlWEqQIlXg2qxYSpAVsT8LcdrKkDLeUCxfm4qQLdkJReBbipAfwidWkJvKkDcNhsLiXUqQGnLuNqDgSpAF9wbSoSBKkDfV+Z+StQqQOQKHT14FStA8PA0sQEZK0BxY7jXwForQB2uV+K1nCtAheYqCLecK0A1hA40CZ0rQDY2+stK\u002fitAsAVUAnH+K0BTI0+yhP4rQLWB23utECxAYNozsK0QLEDLt6Q+rhAsQHmb77SiMyxAVPLJXaJ6LEA1x6Z28HosQA7hC4c8gSxAN8PgtTyBLEAc0fxx+YMsQNIOOo9DiixASYlRWkyKLEBLpyE6TowsQHjNWDhY2yxAY4hZOFjbLECGjQ8Tyd0sQBGXbtHX3SxAcr6Ha73yLEAGrpNi8QMtQLb6eAFdEC1AY3pR82MQLUBKbfDuXTAtQEpt8O5dMC1AE\u002fLz7l0wLUBceREPXjAtQNsppOyEly1A07LQKyQBLkDG0esuJAEuQOnS6y4kAS5ASAF9zyAMLkDV2d6YgD8uQKDEQF8EAixA3UQJGpECLECSv4QV+AYsQOqc91X5BixARvyihVcHLEDWF4IogzssQAvL+Ng0PCxA4rO2tVGhLEDPCbHEe8osQCkZhbpgIi1A\u002f6qnZWQiLUDNVgdffSItQOpsSJGBIi1AcEuMii+gLUCiS7eLL6AtQL6yiYs3pS1AU\u002fxP6BfzLUAU2AfpF\u002fMtQODcF\u002f4X8y1AFwgaBhjzLUDIvAShGPMtQD5XyhUk8y1AKDe45R4QLkCEZSw7JBAuQMI7x9MkEC5AqZLH0yQQLkDCSasgJRAuQNBTLhPiFC5AFKJ3v0kiLkANuXe\u002fSSIuQEs7TMONTS5AyiV8KPZeLkBHsAuAKmAuQNfJIOFycy5AadIg4XJzLkDii2bkcnMuQCtkHOVycy5Akxa0okfKLkC8K+jS5xQvQLHnXAdTFS9AM2mgOoFcL0AzaaA6gVwvQDcfNT6mly9AWd4GUaeXL0CdpxTW6ZkvQImyFNbpmS9AzfIFee6ZL0Arz1PWk6YvQG\u002flxUFX3y9AU5sDn0zgL0A="},"y":{"dtype":"f8","bdata":"yUL6BejfkUAykTEhg+aiQBxdWOyGnJZA8rTuEI\u002fidED0ylNT5PqSQKKiJrzKmJZAHDOFjb0om0DRSm3ocHCWQFRoR6RIsHLAzNhlge9SnUBJZ0Ks5ICgQIaa4\u002fE9qoPAL5NZUMVvmEDU\u002foLtTtWkQHwnw7EgHIlAnur1Wp56j0Bz2yRh0rGVQESomgO3l6FAMKayl5QPokAUw0LN17KlQJGeRgSE7qtAAzs22dZSnEDab73wGB6UQMTkNhdlfadAyV41Z\u002f+soEBYs2c5hMuhQNIbAKuviYjAKq1pXeuPmkCu7ySc74moQJlcVJ+4vIdAZ5qlRIgGoEBdk5k2xPWgQFiuRGSimXdApO5RLbnanEBqI4KkOf+lQFyuSTs8eadALOYkT\u002fCbqkB+g153zkeSQC7RKq+lrodAFYhqYkFemkCcENE4hMqjQJqI815A+JhA7GTgGTvPpEC9otX8w5OqQDisSIq99K9AcGGEyD6tsUCcx5J8k0SxQDAc+9igK25ABgqCmnFyrEDSRb\u002fB5Z6bQKY4yJmYyppAJvFoRwrag0DScY8xSoevQM7q\u002fujwKpxAbITHfVhtnUBgSGLEN\u002f6rQFmlGUpP+KdACI3KGYQUo0DV37AvpJGrQERQ0mF3qKNArT+gw0HelUCwXYMLIYuxQIyxpasznLNAWmczwtZbrkBQYiEu+kegQICQgqY9gKBAkRStqQd6p0Cv3YeSJJyqQB5MLDZk2qdA8cXmR\u002fYDsEC8Fcz2+RClQBGd8LNEeadA2lPHrSN4rkBKQl7OeTKsQMbQ0CpTRqRAlVUeMxQBqUCqBJFO9ySrQESk+kmwzpFAwZ2zEN0Js0AKwVrm9gmvQOKeWYj5sa1Ah8Y0afG8rkCVFtbnmkiuQOwN4JZQmLBApX27IyYOo0A8DHYppiuoQPJiM1nj7KtA+Nkq62I4pUA0Q4I4Y1ilQNvgSv8knrNAfZu7Vk58okDYGyby8FWyQK+0EDuLbqBAZnX2+QRPsUAbjxtSmKOrQFo\u002fc+aksbhA1bIMSnsFs0Aci2vDWLCxQAslXz6eSrFAw0YGJjHRs0AdGStmd4ylQBAtd7Fq6ahAoBjgc6ocm0DaoSdsTCmsQEPRRcxI1rBAEOq+OVfuoUCQwqquoYy1QDgvf6oIbKJA+pfzrueTskAr6fjzkMWgQMQ6kBq8qrVAqPBIlAP0oECEOy2pVjq0QIPBZ0vGjbJAyP0rZso8qEA8njN8hIelQCGrrzwnk6ZAcUfyHuagtEDK4T1YiCCuQGb5gQt+Gq9AwhWlm573s0BiOfe1tresQA6diZVQVLdAPh+ymvvHpkB5xDdykfu1QOlchTkGCbdAPGLKSbOysEBIJAmSZNu1QIYglJy2I7BA\u002fkr5zDE7tkCdT14m9rG1QBw01H6VWKRAjA2vnGy9sUBcOHwJtsS1QBwiB+Kq4LRAwDMCVVF1pUA2peTQ\u002fJSpQP+rn3DRRbNAEQlka25cs0Avb6XtI8isQAaTZN9h07BAgN62Dk6BskB2zLtTrtqwQKfSM0aHmrBAQctnkgBItUCxwymEofytQJ\u002fGpY\u002fzELRAhVS93bxitEDO4u3Qxfe3QA1znScoCrZA89cjogO5tkDN+hNy77y0QNp2doiCfLZAeIggrsCztECJaeyp3RCjQDzHW00JE7ZAmmKYFpWKr0Bjx5le4vOzQGhYA6+N751Ahm5abmBPskB1kWxnV+y2QMZhT6E\u002fmbRAu8b0LYxetECw2uAbjJ+mQI0TvF05lLxAG1j\u002fzjZ9tEC8m2nwkHm2QFb12w+wfbRAFvc5RFB1s0Au9LeQhhewQJo35vv0xLJAhpbP28UJs0DQQ98RSrWtQCvhROMD1rVAxhRm\u002feaDs0AsuF9uOEWzQPh6YI8W8LZA7WaZFCBKt0B0IVBUEWm3QAQxzVoyMqtARnHZ+TRqt0A2cnEUfVq3QDxz78K8lrJAJZT08f+lukAKwFCX3ty3QN826rnI6LVAWS9LnXMLt0BULbaDRP+1QDlhSW5c\u002fLZAtJRY6Hx7sEComN79EOCzQB8nHqfBFbFAxn4d6aIZsUCPAv1Eg0+0QMQSb3KkQbxAf1M4zHoCvkAfmr4TNbO3QBzUx0qUt7JAMItxDGYbtUDUc8Slx8ezQL9x4UezkrVAHXWEkEHsuEDyFA0v48O\u002fQAdU5BPOobVAfBKRO4vdskDSisKW9F6vQG2PBOXnebBAQSBEpPDisUC\u002f1UKxwAK1QDPYX8wml7VA8wBUtPeUukAkiBJhUxW0QObf\u002fmio1bxA0WePpAuwskA0sO+RNNm4QJzS+SOnYrZA0siZw\u002fAktEDmalNkALCzQDZuqwvLZrVA9fpiRkJSukBOZ2hzknOvQHB93L2BirhAWccg\u002fPoXsUCMJObnJrmyQCSVVHpro7FAN+eTslzMuUBfskUyge+vQOd3I\u002f37IrpA4Ge+FoR7skDUD\u002fFNX\u002f+1QLeimmdsiLhAOSIHvLYgsUA\u002f5G9svcOzQF\u002fcWl5EUrlA2ufTxT52t0AqhKTjMMi6QPqNvATn17lAnJTcW9oEu0A1UH2F\u002fsSyQJGrLeLUwrlAp+CFNUqPt0D3FX8DOoWwQHTJDxxy0rdAgGhkUo7PuEBzZF1kUUm8QFXuIZIhK7xAE2WAfSlxuEAqSR33VUO+QNWFsx+IC71ApLeinyZOskDSfbZhrym1QEgKteOx\u002fbdAZMUqyZILvEAY0kXj+MW0QGLO6KjOD7NALiQA2ar0vUCql+EHP3q6QMIPi0SxgblA3garaqrgukCiJf1TJPm2QGiwPxgVpbpAdrMEgcAxt0DK2zTTbTm0QBpKEPHdf75AC4NBlmhoukDOElUOhJS1QHNbpqEZjbVARzviqdpdukAdWILz36q4QB0iYb5O0r1Ag\u002fc3gpzOukCgmvFwjLK9QGohEu5uCLxAIEtDVMxuvUBdhaGQnHbAQI3vp6EuWrxAu10DBKgzvUChWdCT3Ku7QGJAcUVRyLpAdR4aledAvEA8Eejp2+a6QIGPWwafP7xAKbPxz4EDu0AZsaZS4cK\u002fQBntR6qfLr5AhxbN1FEJvkARQGSIoFPAQNMZH2G\u002fPLtA1QRAfJZGwECzryGM5zy6QIGZPDQ+isBAGgw7EpEuwUDGZLWlKljAQFEgafd81b5AVhlnz2CTuUCjSVMQq9fBQArAtwZVE75A5Qzuxq2mwEC5GAShombBQLwtNQf+3sBAopcsspvdt0D6xeFVaji4QN7d02ycg7pAVNFxBuvWv0CU1YPMhFnCQMshBg6SsMFAPc3g\u002fOMGwUBDho\u002f+5ivAQL53dd49O71A8dHVjH5nwEB5JHfJYBe8QKqOAhpMM8JAR2Vml4+svkCvMdkSsRu\u002fQNdFCjra0sBApH+Fy0whwkBq0+59Uau\u002fQEzNH44BlcFAjRsHX\u002fM\u002fw0DASvEsHZnDQH0T448QpsNAM8jHyZxpwkDy+frO4fq\u002fQOuIzyFpn8BAa1cSU015wEBf2Ugh1au\u002fQGd3qQBLMsBA8Hmq5LlruUCQoQDFVT\u002fCQAaBRwWIDcRAmuz7Pb1JwUA5dczSZWfCQPiiRn8CjL5AjNaSw7suwECwsmx\u002fydjCQA45XndJDMJA6SPonKjgw0A6g50A65fAQHiTnCb+zb5A\u002f9GlwoJWv0BD7ZlwjAbAQLklzDgiF8RAXzROb5bXwUBVpxctFLzCQO+bOpV01sFAlb1lf+DgwkBLGXEbICTDQJAfHBSojsVAPcFf0+enxEAHxe\u002fGyoLDQN4EZmBBtrtAIcX\u002fT9tBukCSNMZKZAbCQGoUo3Usu8BAoYuwVC5ev0AbyJ6N79K\u002fQAyuMyklRcFAOVec9LlXvkAM\u002f5oaYmC\u002fQAJGamMsRb5AIYGDliXgwkAostGalwHAQAa3MF70gL1A+XBjmgFawEAf+g3LwerBQCFqKkdkXMFAeHIcnhP2wEDZAe+P8TrBQD6\u002f6ArNBsJAQjQJEWXawECyb9uZYMPAQCqThQgHF71A5HkVfkPrwUDfb04wxpfCQKSi8Hu\u002fgMRA9RBikV3\u002fw0B6Ni38WLvBQOF39tyUqsJA8gyzDAuBwEB+qbc7HlrDQKzM5qlQNMVAsWCELv7DwUDEz2oB883CQPb0LesVZ8BAOxl1l3pHwEBs1rqesfS9QGXNe57PkcBAYMN8QgdHvkBv7qDyisPBQIDwi0Ds0MNAXYEtZOruv0B+FcAByYLAQJDTBJmip8BAoLwZn0WawkA+lBPwkurBQHHaZ4+JHsVAzEp0haufw0B7X+ya\u002fbnCQKz4u78YfMZAvhFhXGp+wUBSXB5GO4HBQCLfHAAtsb5AskFcsq+Bw0Bpfx3c83fCQOdas1XmcMFAttW+IfA4w0CEnlWfwVrBQOqemlP01MBAr+pO5LhSwUBzQoteETTCQMps8fG0isNAWpWtqYstvkBt2eqiFyzBQCa9b4OWOsNAtkHgAfxAwEDro8qECQXHQJYhkphW18FAlkZPuloHxkBEzjAOukLEQFt4\u002fIrAg8JAtylkdDrpvkCqkdnz2GvDQJXsJiyKNsJAXwKD\u002f10GxkBHYVYLrA7CQH5s6X69RsVAU9Q25xJmxEA9Z3SfveXFQKVk7ibLasVAD1rVBSz3w0AOAJsLEazDQP\u002f8dRhiM8RAsEh8Bd9nw0BVwP0tyzvDQNPswNnK\u002f8ZAl06jiM2AxkCpAFvTx62\u002fQF7+SAzXo8ZAjDUSu+\u002fKxEAnA5XfKrTGQPxIVPDQuMJA9YljtbHBxUBCPWN7MVXBQGmdSHfCMsJAZLMtb02RyEA14gLB+oXCQLE4ZybwtspAYsi1BuYQxkDN+bxrIi3HQF6JXy83TcVAH4AEAmF0xkD3RiiC6VDFQAwyMzXYDMZADw9mwMORxEB8KqJLnrHDQJJtJMWHRcZAr2+42MzRx0BeBFwYx+fEQN27ZVsaHsRA5pdqRLdvyEDMJrbuSmnEQB6fydqCA8RAJ+536yZCxECUOJWjk+7EQHRcQRYQsMVAfLOIaEUzykAGh5ffoqbDQBj4mTT39MRAOxAV8jA0xUDqlXNWMizEQA1l0n+VncZAgDyszfuQxECvvIwPr5jBQOxPzmHX5cNA\u002fk6V\u002fwfVx0ABTEdhQQvFQFUJ9qYGmcNANgV59q9gxUDr6oLwmJnFQF\u002f7TEsZOclAelzouB0WxUBBEU91ubvHQKFHJRx2mMVAsYjLfRfCyEDkPVHBkCTDQBnO5SzIfcZAsYOWHKOLx0BjXbK9covHQJtxfu3eRsRABSNVxIzyxEBgtmBm4VPGQAZoTJkdosVAk2iNHxkhx0DXa6bYisLCQJbCOiUMHsdAoCnfUh1AyEBjDhtft\u002fvDQJYy4Vy108VApGm6UgdPyECyE8VcG63GQOG5K3lx3sZA0VWWnjifyEC1sA\u002fk5NbFQH2PH5yX8cZAR5PswixdxUBZLYzjPyfHQCu143qgs8VAhDiAhGA1yEBJ0nj\u002fgyXJQK227mpAR8NAV75GSpFkxUC76MNpywDEQKgTSCUYnMlAmXw7u4q6xEDP5D7j\u002fmfGQG0sy69WeMhAuIBO+0PXx0DWrOzMnGbIQJnm9\u002fKx3cZAv6HOIrdcyUBOIR8RKUfJQNVgviRiO8hAQJHPSEAjyUAi6SyP8WXFQHLBHQSvGMlAzFHD5vKLx0Bkbp6Rr7TGQCb7X1lNW8dA72rr3SH6xUB3sqkSuOvIQMAjm53H2clA2ZZzv3Zwx0BWJt2pM6rLQDsWxYehm8hAIM1B+wwEzkAB4T6VIcrIQEXKAQ7kY8xAD19y59V+xkCqjj0QM0zHQHRK0kQSYchACdCFGh6iyUBk6fS5fJ\u002fHQMZmy4u\u002fUclAZ3lhPzITzUDz6nByTHPKQPIOh9Y\u002fNsZAydz\u002fnKcBy0Dai6s6AzTKQNTRxDRwO8tA+hf0t7Nzy0ABW+o7l03FQEFyOQmAysZAwHMpBDxbyUB07XeGABnFQL0\u002f64LfIshAVGLulShHyEBaPxjvGtjHQCMYA9emxsdAyzlLuc4YyUBjrVnjJHfIQAhrKdUL3shAX2DCxxVaxEA94WjykxnIQMpGW7fJ98VAJoso8rwJy0BrD71\u002fbuTHQJm5YJsAbsRAGa06160byUDvSYS80ivJQMH9\u002f\u002fiqt8ZAkvvgssMgyECcGteTDUPFQD3YzpIbj81AyrtgtnzYx0CvfO+5i2HKQBw5nmB3h8ZAslg\u002fZMcxx0C78hNxzV7JQKZcVC+JPMpAz5tko3iQx0CKEjMpUJfJQEI3jbSTS8hA\u002f1h785nfxkDze8fZfXLHQGgU0BTbm8lAMi8oyHkty0ChNgL41evKQFz3X7L4VsdACMX7cZReyEA0O9psMxXKQF6wHFvca8tAkB964SQox0Aj5TMdBFPGQJb8mqIwgcdAj2C9QwpGy0Dt2k+HO4vIQNPfzkKPLshAMzXQctrvyEBw+KY2GULMQF6uPwEX9MtA+cgnKB2HykDv+kHwQvXGQBhoyX7JpspASYDj03ovykDD3JYpvODOQCKEt7cEus5AzGY\u002f8AkEzUCIbaw5jODHQOpjkQziM8VAS0Y4vbfAyUDKMurAeyPOQMMWG9fDS8hARU\u002fkUVn8zECRI4h4ybrJQMCs9EIc1stAqLV8\u002fRHUy0Asil9Jy+3KQMKMok7qWs1AzsPXmqiCyUAYntMfE3zLQKND+EI\u002fgcpA1z3\u002faREYy0B\u002fE720eCbOQG9Jq2QUp89ApXXIxWdYy0CaJIAy7RnOQDwqbP4jIM5AtcVugNa0zEDO5WN0x8rMQDumSfLMws1AqnuKGKg9zUBEbrAX3ADMQG8LmOU\u002fMstABQoXznRozEBgNKZb+6LQQBLK\u002f9mxK8xAb3vXbhzoykDIXSue513QQKVssFrXMNBA65xKKxthzkA746lVqnLLQE7qfpgZycxAqpw0csiUzUCjjmMfzD\u002fLQCY5AiGMLMxAKycR75u7zkAlbHc5mXTNQIX0f9+I18tAs6jkApGTy0CitFznrZnJQD2NfgCLWspA2aotQwAUyUBvKMWgB0jPQAOd8c+\u002f181As2\u002fesILLzUApcXYb86fLQPnTfyhLRsdABWJ8nJNszUBHd321CcfNQNHWfvP1bc5AcLQxwzauykDgsnrss8jJQApRvpFTOspA3sBDdFpezUDUk8fKmvPLQC6tmKHuP8xAEVDkCtw5z0C\u002f\u002f47gdNfNQLye8gP3p9BA4ak981HDzkCzr4onmxjNQP7NN928TtBAnR9fGgstzUBa8lMPfTjNQCced8CLDMtAu\u002fOGiitLykCM7j8GYWrQQCUZdPudlMtAjFqg7ZoLzEBQls\u002fdGwDNQM4Mvl5HUNBAOkhpRqfVzEAtWDc9HU3PQCT2EJCT48pAiqJ0ggO+zkDMGoqozW7OQG873qUcmM1Aiz69wIa1zkBStNAuccbOQOg\u002fIoObntBAehl1tbtJ0EAX5He12BfQQOOzcXNmZNFAPbXHbRpAz0BAZtbc7orOQKl4rqr8JtBAfBG++aAx0UC6e3kizJ3MQJnJZb8bhM9Ahfk8xeTAz0A="},"type":"scatter"},{"mode":"lines","name":"Regress\u00e3o Linear","x":{"dtype":"f8","bdata":"MqLmaH0A8D\u002f7nqeKxU3wP7wvnDIIYfA\u002fZiKJlD9h8D+bvtDYV2HwP8K61dhXYfA\u002f19T2aSuA8D9GgsJaG0vxP65swvgjS\u002fE\u002fei+V2wtV8T9MOpt+HFbxP36ZgyURdfE\u002fMguE8jV18T8QjY9NRePxP5ttNzeRLfI\u002fhs43N5Et8j8iamaDuXTyPwkslGzddPI\u002fr7eR6eZ08j9lNNLp5nTyP\u002fQQuIvndPI\u002fwJs1payt8j8T+S2qrK3yPylTkEcnj\u002fM\u002fv+1dVSeP8z+r1vZk9CD1P0MfX+dDyfY\u002fO3ktKkTJ9j\u002fQmKFQiQT3P8ogteT1Mfc\u002fnuXAeRAy9z\u002fKUHftmDL3P6CI8KzYQfg\u002fSFmG6D3m+z\u002fEtNwAsPn7P\u002fyGCTGwAvw\u002fzGVkih+E\u002fT8bZNmeHqP9P4M7H1Ai1ABAHGA7bCLUAECM51NqsdQAQMXmu0CPIwFAZxBaTv8nAUD3mp1O\u002fycBQFJDpMqrSQFAz1rP3aNKAUA+JR\u002fRBFgBQFfAkc90cQFAI\u002fU2ZLJ6AkDD9sfLNYMCQIqdaLmRDgBA7g\u002fITPe9AECbXRcBZMwAQK13jTwGKgJA4zIkI90rAkCSPbKx3SsCQCOCx7TdKwJAqPnrzd0rAkCO3bW8NS8CQPZkfbebpANAmQSsg7WmA0DyYhej6PIDQIcGQdOw3gRA2Xi\u002fZ9JbBUAFku8\u002f6lsFQE\u002fPBLiOGwZAdZIKp20kBkB3WvjjbSQGQBF5DH6cJAZAi8Haail1BkDlruBqKXUGQH9mfpUqdQZAX6zy5St1BkBB9AD+LXUGQFlee1yMegZAdY7NL158BkD1tc0vXnwGQM752hygmAZAgdYcw0yZBkD80H8ZoJkGQO4QRHvi6AdAkczQTQztB0BMvu5opTUIQGhwrSDwSwhADmuLZvBLCEBdJaibFk0JQPqYNmj8ZgpAdw+j9Ya0C0DM\u002fasIEfcLQEYy73YS9wtAq9n6ABP3C0Amz8mTwhcMQCRJ86E+HQxAxNqHmn8dDECvi0yYYPkMQECwzw8XxQ5AmWRXlyWFD0AQUtZBrpEPQEwPKTK2kQ9Ai12hQX\u002fRD0AFaIGtADIIQMDbsIYIMghAbM35fDk4CEAIrsh71zgIQIMAynvXOAhATmkBvcc+CEAQ44DEt2kIQIrJT823aQhArJx8veHKCkDKQGoH4soKQDPIPV8S+wpAJ1zjlK3\u002fCkC\u002fXtqBwCELQNBilytO\u002fwxAjIym4KwwDUCbKL6PK5UNQLDsjPPplg1Aekyuq9SZDUAQI4oVRaQOQMDRM\u002foKHQ9A7H2TCZaED0Df4Ymmn4QPQDmLD5GMhRBAKV6+uuUdEUDydB9TCSIRQMV7IlMJIhFAezoLyn4kEUCF9FrYISURQF1Wdnw\u002fJhFAZmmnJVMmEUASNEQFtiYRQFua2QW2JhFAqp739jNAEUAMSE1aPqkRQK6fX30+qRFAu3qiD1ipEUDvF9Y8MwwSQC5ckqxrThJAlMLKVeNPEkBs\u002fMpV408SQNyIt8z6aBJAbrSIofSGEkBULAZa9oYSQBThUQj9hhJAFUYuX4ACE0AYgXODFOkTQGyxlQsg6RNA2\u002fLDCyDpE0Ah27nXQukTQHK\u002fQbJm6RNApx5cdQEAEECTmQTXrTcQQKiRXrwVWBBAsbM9z85TEUARINcs4FQRQPAe7rTziRFAyFOyRD+KEUCP\u002faEMiooRQNItfgzgjBFA\u002fKlplmoKEkDln8K5WlASQEZqW3vbYBJAoQUv\u002fNtgEkA1jBv922ASQKkJyYJ23BJAvzPbblbdEkAI\u002fcNLV94SQIvG4KB+3hJAGUg1iWsKE0Bs9IOH7QwTQJ4ipbOnDRNAIbvfd6YPE0B+gVOSXxATQPsELOi7FRNAN7GvadtmE0A1bcDENv8TQGwO56FADhRAUeVpzkgOFEAckJV0ug4UQIth7IcqFxRAKZH24k0aFEBETG5iYzkUQERMbmJjORRAed9OvLRAFEB53068tEAUQKVhO9dOQRRA62Cc9lBBFEBbrW+58UcUQMTSIObxRxRA5EaaWbxcFED2kI6a1l8UQBjyCafXXxRAEovTPazIFECWqg0vSckUQA1puJMp1xRAAJJhFkXXFEDPB5YWRdcUQJfINPytvxVAl+EPbbK\u002fFUAjQmVGs78VQCEQrPluHhRAM+6q3zKUFED5VD2oH8kUQH305yEgyRRAzKd7w23JFEAqaMZnb8kUQCJgzsY9zxRATCJVeEXPFEDqoqDuVs8UQDGFC4mQzxRA6bMVvJnPFECogjlw9c8UQBoEUwsI0BRAT25plUbVFEA7HAtkr9gUQHpIPKgV3RRA0+J6WdDdFEAz2OYE290UQJzxTjHc3RRARfX4rt3dFEAtEskj3t0UQOBb5x7ULBVAkQmvm9csFUBID6+b1ywVQHzGwqpRLRVAQp7DqlEtFUAQ8xqrUS0VQOEkBIp4LRVA51ClF7AtFUALWCrPITcVQDLGgDcmNxVA9HQNP\u002fA3FUAbaA1QajkVQCtK2S9uORVAe71rAtFUFUDsI\u002fc6xJMVQN8H8TEHgBZAG\u002f+TjzSvFkC9tCYMea8WQCkTJ3F7rxZAXAxWgnuvFkB4JbvW0FEXQLyiWu\u002fQURdASN4xuLUJGEDxkRd9WB8YQOiE8i\u002fdIRhA+QwA0nIwGEBeeeJUdkoYQD3HGoET\u002fBhATWkvoxv8GEALPAojAAAYQC7SHCQAABhA8uNOduoVGEC8QCoXrIwYQKU+Cu\u002ffpxhAzfe2wDmvGUACmlF4PK8ZQFZa4bRsGhpAeETGwmwaGkAxVF0U4SwaQHXqIrbliBpAtE2zDD2xGkDe\u002fNJ\u002fPrEaQN780n8+sRpAuwEtRD+xGkDn6jJEP7EaQIz3baY\u002fsRpAYP4qntzFGkBVsDD0K8YaQM7CPk0txhpADrqKTS3GGkDPK2npLgIbQF+VHiqUJRtAK4PL2ZcnG0B03fKwASobQJTs\u002fJJq3xtAuVquuTayHEAFT6W7NrIcQACj163xshxA\u002fHO7MTKzHEAQ7OdjtLMcQEq4uOAcMh1A3FEw9iNNHkAzI1O1bk0eQFnRgThvTR5AL3hdUcVNHkDbRd8Nl7AeQDDfUvNisx5AMN9S82KzHkApZqZkxLMeQF7zp\u002fTGQB9AwB4KztRAH0A1oVwAg7MfQO6BYgGKsx9ASFtCQMkVIEC00XxAyRUgQDL2wtrJFSBAqxeVdhgoIEDXpmCHGCggQPlYss2eNyBAj8TUJc5sHEDXo3+ekuEcQFAEG9KYJB1AcjSHOHZ0HUD3A53NdCQeQFYyFePx3B5Akwx4D\u002fLcHkBFp\u002f5NIBMfQByMkI7\u002fGx9AbHdGcTq0H0AFNRrcYzAgQIykYMzYMCBAAbIxdwyhIEBeit6Ukr8gQNR8O8CdvyBArVHLMp+\u002fIECtVDr9s78gQEMTGNSGGiFAeoHJ9IYaIUAKttdqkhwhQI7hcW6SHCFA0Xwur9IdIUD2QBTeLx4hQEVJ1\u002fzzJCFA+OhxfnAsIUAJ9gV\u002fcCwhQL6L4EkKMiFAvovgSQoyIUD7i6+dCjIhQI2HKIkTMiFAjzMzixMyIUBCf0WqEzIhQCi\u002fFBR9SyFAYXGpfX1LIUDFmgDGfUshQO70AKKoeCFAYIpXoqh4IUA1A2L\u002fU5AhQLi6\u002fNxpkCFAfE9z7amQIUC1a94gzPAhQG6PbTQwEiJAzVNIwwpmIkAfombix28iQLF00A\u002fKbyJAIwRrTrNwIkAk2z3CO3MiQD9Hp2ArgCJA9pO0+JmFIkDp24bE79IiQK3+Uyk\u002fBSBAqN9OPoAZIEAQONsyhBkgQHgBnxGOLyBACJ9\u002f29o9IEDl0Yvh2j0gQFSx3YjwPSBAEBKNHwdCIEBs5ODo9HIgQE\u002ftXer0ciBAPr3pGCePIEACCZB1ZZIgQPqf5nVlkiBAOFbiVtiTIEB7IZYh55MgQAwDcih6mCBAO23ePNyYIEAfN71h3JggQN0M1\u002f7cmCBAndWL4d6bIEAqTRCIt7QgQFLet6URuCBAXPSBixO4IECaVJddy7kgQESkLpMtuiBAIXbslS26IED+qF1LFu8gQBJ0ch4DDyFAHp6SWHQQIUDDc6ZYdBAhQLUfc7mFHCFAiuxXo\u002fEpIUAMb4Wj8SkhQIPuR28waiFAP1xQ1m5tIUBFcg6o63ghQEigYhYXgiFAuw3mrxiCIUB49vBt6uUhQKChIcMD6yFAMBXuz6v1IUD4+vKvBvkhQF2kUkoq+SFAwmxiNkEMIkAktJciTwwiQCpRsMbonCJABrkCubesIkCkvIYW4qwiQPus0TwErSJAHq3RPAStIkCZpN4kMAAiQE\u002fWMSUwACJADDR5H19YIkCIGsYuZVgiQKV1KID0WCJAzEoIM9JaIkCJACsl1lsiQOFZL9WWYiJAfpQmDIyTIkDSlkwMjJMiQD4PTQyMkyJAzvhNFY6TIkB0SCfinZQiQEUNtnfGlCJApy4vhA+VIkAeemRwwZUiQAU\u002fmUOz0yJA8cDGRzAiI0AysxnC6yUjQIbGVRjEKiNA+xJuOcQqI0BhaDUi0yojQA8IuAgWKyNADwi4CBYrI0CcOs1hjCsjQKGYPSTVPyNAQcTbxVOaI0DuhdlM25ojQAz\u002foI7eoSNAk46ay+OiI0A3wvXPPb4jQImWrHDP6iNAvkivl8\u002fqI0BoU0x7SCAkQGWnaXtIICRAI+dkwHlMJECJ45jAeUwkQDMXPf3ipCRAmfOplFuxJEAajC5aa78kQKQBaGFsvyRAwJiWP\u002fEEJUAMSlAR4wwlQGos3kQgDSVA\u002fXHeRy4NJUAD5NHqeiElQLgcGe16ISVAGhdvzjtRJUDSgVSXI4clQIzsHaAkhyVArlQXpJYAJEAJKvszmwAkQNQ3UGQEASRAEOKIweIEJEAUaJdl5wUkQM5NhYmpCiRAF83q6soRJEA1SfLryhEkQJcHp4TMESRAcpuPNBheJEC\u002f4JTSimskQLSwyuOVnSRASLHK45WdJEAPelLRorAkQLd9UtGisCRAF1jGN7OwJEC+8cFdSOAkQMHVURAL7iRA\u002f60ScGMSJUALS2KJ0xclQNJcJy7UGCVAQkVn5dQYJUAu61oP1RglQNgQnRLVGCVAYk8Dp9wYJUAg+fYd3xglQBgYbdGuMSVA+8Us5IyWJUBgRJNKjZYlQHVEk0qNliVAbFZhqHaoJUBqtkjyv7clQDoPvXH2wCVApVbbhy7lJUB3iJvQ3SAmQH0O7Ck9IiZAIY2ylgcjJkDNqOCsECYmQPMLKvFFsCZAEvIRCkawJkBLWNZfHLEmQEZTdRMKsyZATx2aqgqzJkAHDL2qCrMmQD7\u002fp9IMsyZACwOo0gyzJkB+Ki\u002fIFrMmQAL23T8xsyZAz+tYajGzJkCrr6kRRLMmQIl4EI4LACZAPPA1NwwAJkB6ePS9NR0mQLEJ6ug1HSZAhxpj6zUdJkDxRdpKxh0mQEzTQqodVSZAP1QNLt5YJkBpmuks+WAmQNkmWzyetCZAG\u002fgkN8y9JkATQvdsYNAmQK3TdfN91CZAruKgx+rVJkC+kHiOFOQmQEOheI4U5CZAD0NfTBtDJ0APPuIeiZ4nQDSOOY+snidAB7ZBchqfJ0A2XO6oww4oQJoXAAdcFShA0Wga8SEjKECdm11tIiMoQLj4DpgiIyhArjo70CIjKECRVILWIiMoQJ22ZOefMShAa5SAWvg4KEBNCGItjKsoQM9orL2qqyhA06VB5eWrKEBSFuA4BawoQPo0pFRZrihAi96kVFmuKEBsxnjBRNIoQKlEe8VE0ihAbCFualzSKEDqwdt2lxgpQCqu\u002fJXUqilAzLschzS0KUDcwi7xqeopQDm9k\u002fy67ClARnESRW95KkAwAsYmV5cqQKwGoIvlnypAMikwtY6nKkDnCLrTFLsqQLRvzgzxuypASSwphcfBKkCUAAAAAAAoQBVSEMd4AyhAQXBBWNIDKECqWQ\u002f02QMoQDNfD\u002fTZAyhAWUGe9tkDKEAZy7gMUAQoQCXLuAxQBChAFv+eAvEdKEDesa8gNx4oQJOR1Fg6HihAffZrS0AeKEDQblcQTh4oQA2\u002fm7hOHihAKS0zLNc7KEBYk0D61zsoQLpzOYWLPyhA1UIyPe1NKEAVaw9ZWk4oQILTiVlaTihAL0sF2FpOKEAaazkUsFQoQB0stCWyVChAhUkAY\u002fBUKEAgLWDlF1UoQBWkkx+KVyhAP4sBkJBXKEB8Tbhco1coQMkGHl2jVyhA8AfCXaNXKEAE2EgcwlsoQOJX56G5mChAshNMHdvgKEAfVfZfrEIpQK7eEQ42UilAHAi4JkFUKUAFEcgmQVQpQJBxo03OVClAZxgMvD1WKUDTKzO1g2IpQHdYQxGIYilAxYIKk+yMKUDFGcY8dacpQC1HAhroqylACSAmGuirKUAgSwLG8aspQAd\u002fqpqorilAshXrdIKvKUBivPfJla8pQCKnmizRrylA8JWQ6ZJhKkA3ZrCjlWEqQIlXg2qxYSpAVsT8LcdrKkDLeUCxfm4qQLdkJReBbipAfwidWkJvKkDcNhsLiXUqQGnLuNqDgSpAF9wbSoSBKkDfV+Z+StQqQOQKHT14FStA8PA0sQEZK0BxY7jXwForQB2uV+K1nCtAheYqCLecK0A1hA40CZ0rQDY2+stK\u002fitAsAVUAnH+K0BTI0+yhP4rQLWB23utECxAYNozsK0QLEDLt6Q+rhAsQHmb77SiMyxAVPLJXaJ6LEA1x6Z28HosQA7hC4c8gSxAN8PgtTyBLEAc0fxx+YMsQNIOOo9DiixASYlRWkyKLEBLpyE6TowsQHjNWDhY2yxAY4hZOFjbLECGjQ8Tyd0sQBGXbtHX3SxAcr6Ha73yLEAGrpNi8QMtQLb6eAFdEC1AY3pR82MQLUBKbfDuXTAtQEpt8O5dMC1AE\u002fLz7l0wLUBceREPXjAtQNsppOyEly1A07LQKyQBLkDG0esuJAEuQOnS6y4kAS5ASAF9zyAMLkDV2d6YgD8uQKDEQF8EAixA3UQJGpECLECSv4QV+AYsQOqc91X5BixARvyihVcHLEDWF4IogzssQAvL+Ng0PCxA4rO2tVGhLEDPCbHEe8osQCkZhbpgIi1A\u002f6qnZWQiLUDNVgdffSItQOpsSJGBIi1AcEuMii+gLUCiS7eLL6AtQL6yiYs3pS1AU\u002fxP6BfzLUAU2AfpF\u002fMtQODcF\u002f4X8y1AFwgaBhjzLUDIvAShGPMtQD5XyhUk8y1AKDe45R4QLkCEZSw7JBAuQMI7x9MkEC5AqZLH0yQQLkDCSasgJRAuQNBTLhPiFC5AFKJ3v0kiLkANuXe\u002fSSIuQEs7TMONTS5AyiV8KPZeLkBHsAuAKmAuQNfJIOFycy5AadIg4XJzLkDii2bkcnMuQCtkHOVycy5Akxa0okfKLkC8K+jS5xQvQLHnXAdTFS9AM2mgOoFcL0AzaaA6gVwvQDcfNT6mly9AWd4GUaeXL0CdpxTW6ZkvQImyFNbpmS9AzfIFee6ZL0Arz1PWk6YvQG\u002flxUFX3y9AU5sDn0zgL0A="},"y":{"dtype":"f8","bdata":"rPD3PblWlUDaNevtj6GVQPJ33rU2tJVAtt+UV2y0lUDOPnjXg7SVQJwSfdeDtJVASoXW7V3SlUCowml945aWQMNtrNXrlpZAdix3jYOglkBiLgeSi6GWQCuhZbKFv5ZAmYORVam\u002flkCvMUn4PSqXQDvS\u002fpgwcpdAFjD\u002fmDByl0DMYOwDGbeXQFxbeco7t5dAU\u002fus+kS3l0Akbuv6RLeXQJ0Ls5dFt5dAzJM1QD\u002ful0DStwVFP+6XQGIl4RKZyJhAXgo\u002fIJnImEAOnv1ksk2aQDY8z\u002fCX6JtAI+yAMZjom0D5LAWr\u002fSGcQErWhqD6TZxA1RVxXhROnEDCsteBmE6cQDLDigZFVZ1AAGjsKxhuoEC8byCIgnegQIrMRDTee6BAmLdGNX42oUCB3QlSgEWhQOKuPdrON6NAzFR29c43o0CGM1BuWTijQJTkhf+4hKNAiNYDIwWJo0B6PkUjBYmjQF46WxmhqaNA6CjYVJGqo0BUsuMBhrejQIixfyIo0KNAAnjSHAPRpECYbWCeQdmkQGbL9yl9eKJAbn4EP1cio0BgBB42TzCjQK4d6dfjgqRAeuh626uEpEBcP4dlrISkQFiQg2ishKRARo3cgKyEpEAs9Ixg6YekQOorpG2B8aVAKrdnOYrzpUDqB96oVD2mQCYIg6eoIadAGEroitWap0Da8B6i7JqnQGJyyCGCVKhAWmkLRhldqEDeFwyBGV2oQOyW+aFGXahAwnDGqEerqEAkLsyoR6uoQF4v+clIq6hAKoXKD0qrqECqeuYWTKuoQDhtjQJ\u002fsKhAGLTtG0KyqEBY2u0bQrKoQCg3hFifzahATL2DiUbOqEBCo3I9l86oQHyUulpAE6pAWnGIe0gXqkBq95wMll2qQD5Ip1ssc6pA6tJPnyxzqkDSvM+1MWyrQIh2jBkufaxAnIMLSi3ArUBKMJvbnACuQD43Sj6eAK5AWKn4w54ArkDasKjPRSCuQHQkvnqVJa5AnIuCZdQlrkAuPiDmwfquQCImFPL3W7BA5jx1DPa4sEBTpMWpB7+wQF8sz4ELv7BATzSp7e3dsED0e9PNDlqqQPKDfmcWWqpAXn6dQhVgqkDUqsJCrmCqQJryw0KuYKpATi5\u002fdG5mqkCiKgv9ApCqQBzIkgUDkKpADInF+OrdrEAq31xA692sQOaEppmVDK1AgrjnhwsRrUCuiN6xCjKtQJAenn9\u002fAK9A8p8Xp04wr0ASIQ8HoJGvQGYFN05Qk69AVn4dayOWr0Dsa7jDE0ywQJgUJwCOhrBAafp3irC4sEBm1gwytbiwQMFgnt\u002fFdbFAPfRDE04JskBs3EssUA2yQMHKTixQDbJA50HvvLEPskDVt6CjTxCyQLqnB0BkEbJAPeYaSncRskCpwYcJ1xGyQNluGArXEbJAYEN+rIYqskCe\u002f8v2PpCyQCeBwhg\u002fkLJAIjIS3FeQskDl7zz9EvCyQE3ZMoAzMLNAr70tSZ8xs0Cy9S1JnzGzQKm9vK7rSbNAU+3q6vJms0CWfXuV9GazQLiztQ37ZrNAmKLwy5bes0BV8P\u002fa4L20QEJjzgXsvbRAVy77Bey9tECYl1S4Db60QGNAsnAwvrRA7\u002fibiXP0sECRbiZaXSqxQDxkePy+SbFAwfML24I9skAzYEmUiz6yQHa86o\u002fxcbJA4ggpvDpyskBHBuQmg3KyQPrHHT\u002fGdLJAgbGAxljuskALI+rmEjKzQCkVYhkOQrNALhcjlg5Cs0CMIwiXDkKzQKtydcjAubNAX4RRoJm6s0BR5WxekruzQK3vN3W4u7NAYxIL4EHms0DF26uSr+izQKyfGdxj6bNAGJyselLrs0AK2hO7BeyzQPhljq428bNA1pvHp8U\u002ftEC1zQ\u002f7T9O0QNyXGiPg4bRANqd2DejhtEBA\u002fN0bVuK0QFj3n+WB6rRA5fgS24vttEAD9C3KpQu1QAP0LcqlC7VA8cfy6rsStUDxx\u002fLquxK1QI1RsSZRE7VASbrkNFMTtUB11cJTvhm1QDJJCn++GbVAhD6yr+AttUA71bjU4TC1QHJgt9jiMLVAidjeCWeWtUD\u002f\u002fvQE\u002f5a1QEog9RtvpLVAJ735v4mktUBmiizAiaS1QE5x7b6ZhbZAIuvXC56FtkARaE7enoW2QL1ZuIaL8bRAQ3GEWJZjtUDlRzjO1pa1QH1ACkTXlrVADERYcSKXtUCbk1kIJJe1QI7pHWrDnLVAKDZh3cqctUBHblrG25y1QHPxlY4TnbVAy7AsdxydtUCtHidFdZ21QGKprEmHnbVA3t+IYpuitUCRZYCZ6KW1QPXdxUIrqrVAA8AbDeCqtUDkMi5i6qq1QDgYF4XrqrVACUmw9uyqtUC1Bs9n7aq1QJM\u002fVlpk97VAAp\u002fkumf3tUCLpOS6Z\u002fe1QD12JO7d97VAMUcl7t33tUA42Xnu3fe1QAfozZID+LVAY9bWXjn4tUAV6aynXgG2QEuoV+xiAbZAw97bkCYCtkBzyCaulAO2QC0EmG6YA7ZA2m1Jnh0etkDJXK1hE1u2QDy7f0XeP7dA79OC1I1tt0BWsdEm0G23QO4DcXjSbbdADuwUidJtt0ChlUYYBgu4QH7MHjAGC7hAAvaUthq9uEBhYP1hDtK4QKCeRbN+1LhAPo\u002fgTJ7iuECVNg9Iz\u002fu4QDCWXgTPp7lAzNqg5NanuUDt1Vm1s7O4QNK9Y7azs7hAst0FrOzIuECkDTwz7Tu5QH+Rb+REVrlA6i7kZktVukCwQ4EITlW6QBqdFsoavbpA+hSL1xq9ukCAcAbP+c66QD88\u002frsVKLtAuKn6liZPu0C8017+J0+7QLzTXv4nT7tAnMODvChPu0DyfIm8KE+7QHmNqRspT7tANFOuQB9ju0DoKaIUbGO7QA2xx2JtY7tAgUERY21ju0BfrMtciZ27QNlvaCjQv7tAjACdisPBu0Dx\u002fI7ZGcS7QKC3mJPGc7xAeloqvOg\u002fvUBYaBG+6D+9QClbTcedQL1AGmMRQdxAvUAOX49VWkG9QK3nmcvDu71AHx0OU9jNvkBzekO1IM6+QJF+TDQhzr5ASpBelHTOvkB05z2RJi6\u002fQJsx6tTbML9AmzHq1Nswv0DlJ6IxOjG\u002fQCrzd47Hub9A4C7F99S5v0Cg+X2GcRTAQMRoqep0FMBAtAi6cpNOwED8pfJyk07AQLw+WAiUTsBAYwc\u002fe05gwEAMqoKLTmDAQMzf2y1Xb8BAk24n4rH8vEAHFs5ZxW29QKIVXx+trr1AFa1RLAT8vUDsn8pscqa+QG8jUW8aWb9AosVMmhpZv0Afalxcko2\u002fQGKLl88plr9AKZSmWMoUwEAFgQfAVmjAQNZq6v3HaMBAq2rlmm\u002fVwEA\u002fBZuw\u002fvLAQOkFk4EJ88BA0eFr6ArzwEBwN5gKH\u002fPAQNv8ctcSS8FA7NQb9xJLwUD5ccXgDU3BQFR2QuQNTcFAcC0tBUROwUCMQ\u002fBBnk7BQKRnlJ4rVcFAh5HRiWtcwUBp8GCKa1zBQK2qfQHYYcFArap9AdhhwUCyZqZS2GHBQCEl7\u002fXgYcFAIUvp9+BhwUBiIAAW4WHBQBKdOtd8esFA7tZ4PX16wUD5i4aDfXrBQPn30tQ6psFAsdAm1TqmwUAC\u002fYKjJr3BQE0PKNA7vcFANwIl2nm9wUCviy4KkhrCQA5pzeHnOsJAq4DozhuMwkBKBhcdipXCQG+t4TiMlcJATNXTF26WwkB4z7IL4pjCQCuWCvlopcJAqV\u002f1mquqwkBZ7mOGj\u002fXCQLF\u002fdTaPPsBAjslaYCxSwEClieQ0MFLAQEtexLeHZ8BAdNq6xmB1wECuG5bMYHXAQKGpqcR1dcBAVjZDRWt5wEDD2uASzajAQOvXURTNqMBAt83RERvEwECNyVAuP8fAQL+jpC4\u002fx8BALKUWVqbIwEDffxSptMjAQLo1xaoizcBAXhtupYHNwEC\u002fgCLJgc3AQODpRGGCzcBAE2ZC7WvQwECvf8R+e+jAQPump3u668BAejkWUrzrwECD\u002fa48Zu3AQHRbdlfF7cBAdv0dWsXtwEDEt6rdASHBQEEPvVHsP8FAxrix31FBwUDl7cTfUUHBQI1UGpYBTcFAPxcB4QBawUBxKS3hAFrBQGvLVLw3mMFA2ODh4lubwUBsn3O8e6bBQKB97PRcr8FAmLV9gV6vwUAeJghoCBDCQOYBHHn4FMJA1IyvR0ofwkCaCMsAiiLCQHSwB3usIsJAvP8G6Sg1wkAx\u002fo5kNjXCQPHmV8c9wcJAKNqOyYzQwkDqpzXQtdDCQPjaIOLW0MJAGtsg4tbQwkBJ1Xh\u002feSnCQLRlyX95KcJAY53Uzd5+wkDCxhas5H7CQLtqmHVvf8JAYBtvDj6BwkAQK9HIOYLCQDFYftLDiMJAH1uh0Sy4wkDXKcbRLLjCQHSextEsuMJAGwdPyi64wkAQoXf\u002fNbnCQEtGk0xducJAQbLcCaS5wkCscSJWULrCQLpHTddM9sJAXXbcpU5Cw0BGm3br60XDQL6hmQudSsNAiRemK51Kw0CtE8Sbq0rDQLAj2WTsSsNAsCPZZOxKw0B6yCIAX0vDQNsEW5kDX8NA3ux12qW2w0D7q58YKbfDQM1HUJnzvcNAUrITlPC+w0C7UtE8bdnDQNhK8CqWBMRATUa3UJYExECESpRzXjjEQCaxsHNeOMRA4hHpESpjxECPaRsSKmPEQDjoBMvHuMRAChardNvExEB4xRVtedLEQK7x\u002fGt60sRAy19gq8wVxUCSZVExfh3FQJMckXW5HcVAYqIrB8cdxUDUgYZhbzHFQH9Ku2NvMcVAMzWazK1fxUCK80NT4ZPFQA9wrlPik8VAFtYFHq0ZxEAw4\u002f2IsRnEQIXTBmYXGsRAlJAwdNYdxEAwhN7a0h7EQG5\u002fVnxuI8RAxLDaKFYqxEB+2NkpVirEQBfqorVXKsRAPW\u002fJ7jl0xEDI+o+3P4HEQKSKRci1scRAM4tFyLWxxECpJ5+IKMTEQDMrn4goxMRAM8VYajjExECZxMl5TPLEQEgyA8+f\u002f8RAyDUUCtIixUC+ZBMhFijFQBRl0agOKcVAfUFGWg8pxUD+YuaCDynFQN4pDoYPKcVAuawc3RYpxUC6BB5AGSnFQG5i\u002fyYgQcVAHqmh5s2ixUCFbMtJzqLFQJlsy0nOosVA3roJsia0xUD\u002fi4hF9MLFQGL6kDXgy8VAAY5NLPPuxUAziCttvyjGQF7gAKsTKsZAKK2LsdcqxkCYLLs2yC3GQPmW8\u002fSes8ZArewRDZ+zxkDjAjecbrTGQCC1SbRMtsZAzkinRk22xkDQHMlGTbbGQHteQV1PtsZAKWJBXU+2xkAEGi8CWbbGQG0DqqNytsZAuS3NzHK2xkDNHSfdhLbGQIh2d8r2CMZApgVEbvcIxkApszHyNCXGQJuYyxs1JcZAA6YwHjUlxkDMUj3twCXGQBymgmtYW8ZA36PQkfpexkAOZqb302bGQPLNTRbUt8ZAlO2bxrfAxkBnDDmgtdLGQAkXftix1sZAKREWJBPYxkDe1F1LyuXGQN3kXUvK5cZAxbXu+89Bx0CnECbeWZrHQDSLri98msdADBZlmeaax0Agmr4iCAfIQEsdySBrDchAIAWEk8EayECRjtkLwhrIQOBnMTXCGshA0A2Xa8IayEBdWatxwhrIQMak7UDKKMhA79R6QecvyECKPbDM257IQNhOoGX5nshA9+V3rjKfyEBMOo8EUZ\u002fIQGu1\u002fkeSochAn1n\u002fR5KhyED92N0BW8TIQMfjvwVbxMhAdfxX63HEyEC3LpWWdAjJQAushjESlslAXk3SQyafyUCJ1XHx4tPJQEGFQkPj1clAoxAa0iReykAEHG+sGnvKQKoLVtJjg8pAPmYh\u002fM6KykCEaq4Yt53KQBzDfFuMnspAul8IlTOkykAHKcL2u\u002fjHQC946KQY\u002fMdAla46YW\u002f8x0CX7nS\u002fdvzHQPPzdL92\u002fMdAGiLvwXb8x0C3Llwc6fzHQMMuXBzp\u002fMdAQtghqLoVyEDK6ruO\u002fhXIQH710qwBFshAJ\u002fVHbwcWyEDSGsTEFBbIQKigtmcVFshABW9B2K4yyEAePsufrzLIQNAhQzZFNshASofuiTJEyEB28sUynETIQDx8PDOcRMhAiFO4rZxEyECIKDOpvkrIQATQ8KnASshAkRaI7\u002fxKyEAf7CcyI0vIQHzgRaCBTchACPmW3IdNyEDDPCgRmk3IQM++ihGaTchAqpApEppNyEChj5l4l1HIQKK15JWhjMhAzRdfT3vSyECAiRLuNDHJQBorptxAQMlAL67baztCyUBTNetrO0LJQKiubRzEQslA6VYz7SdEyUDXkjuSClDJQPNmA8sOUMlA2xIANxx5yUAdnG0jzpLJQGatyf8cl8lAJWTs\u002fxyXyUAyUoNdJpfJQEdT4DrHmclAD\u002fAJMpqayUDFuaHqrJrJQJ8SqWzmmslAvzXJkQlHykAgE9c1DEfKQIvS3RsnR8pA+0cFQetQykCmr3jHjFPKQBZV9RmPU8pA+fNVQUpUykDM\u002fNImXlrKQKBJnAL4ZcpAseR5bvhlykANiwu+ILbKQC5Y2P0+9cpAo8wQ0qv4ykD+iWDhVjjLQNGjpyA2eMtA8OswPTd4y0DSNRDQhnjLQFEBuU611stAvNfRT9rWy0DPLnhg7dbLQE89MDOD6MtAa\u002fTgZYPoy0AqCtHvg+jLQBki1YFdCsxAqKFQkh5PzECCZCIzak\u002fMQE4dB02DVcxA7vxgeoNVzEBnmGkPKljMQCol7kVBXsxAy3HbyUlezEDJQd1qO2DMQOPmh77FrMxA5ZuIvsWszEAFvkXYIq\u002fMQMOiUh8xr8xAIZvemm3DzEB\u002flXFYFtTMQLFiiXId4MxAdbQtLCTgzEBleExeG\u002f\u002fMQGV4TF4b\u002f8xAtOBPXhv\u002fzEDRfml9G\u002f\u002fMQMA2H4v\u002fYs1Aln2L\u002fEfJzUCXeY3\u002fR8nNQLB6jf9Hyc1ASRZptevTzUDM0tW4qwXOQFp2rLxQ2stAkLSGBNnay0A8G0tfHN\u002fLQACRnJUd38tAgjEHy3jfy0AL2i02\u002fhHMQP+EmEiqEsxArIcR1pR0zEAbhBnAcZzMQLgGuGCP8cxADSMq7pLxzEDW92sdq\u002fHMQPQRty2v8cxAZZerBWRrzUDEI80GZGvNQNSJyk5DcM1AkgPBaa27zUBaD3NqrbvNQFGe2H6tu81AbvmZhq27zUCQ7p4crrvNQHl9rTS5u81A+bLZe8nXzUCXNCOmztfNQEsB6znP181Ac1XrOc\u002fXzUBrx2CEz9fNQM\u002fudB5m3M1AnRASTmHpzUDdJhJOYenNQB4WQCtHE85AChqlriIkzkA23MdGTSXOQHZRipn5N85Aw1mKmfk3zkB\u002fl7Wc+TfOQBqwZZ35N85AsaHdoA+MzkA0wBPeU9TOQOBb66671M5AWTMo0akZz0BZMyjRqRnPQBN34SvwUs9AaBYDNvFSz0Bq3xRxIVXPQP3pFHEhVc9A3DCA7iVVz0D0563zZGHPQFdavftcmM9AweI8l0qZz0A="},"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"title":{"text":"Regress\u00e3o Linear Sal\u00e1rio\u002fAno"},"xaxis":{"title":{"text":"Ano"}},"yaxis":{"title":{"text":"Sal\u00e1rio"}}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('7cec3367-d184-4621-9cc8-569fed5af849');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>código</category>
+  <category>programação</category>
+  <category>regressão linear</category>
+  <guid>https://your-website-url.example.com/posts/post-regressao-linear/</guid>
+  <pubDate>Sat, 22 Nov 2025 03:00:00 GMT</pubDate>
+  <media:content url="https://your-website-url.example.com/posts/post-regressao-linear/graficos.png" medium="image" type="image/png" height="118" width="144"/>
+</item>
+<item>
+  <title>Cotação do Dolar</title>
+  <dc:creator>Gabriel Morine</dc:creator>
+  <link>https://your-website-url.example.com/posts/post-with-code/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><strong>Cotação Dolar:</strong> Compra x Venda<br> Aqui está um programa simples em <code>python</code>, utilizo a biblioteca <code>requests</code> junto com <code>pandas</code> para manusear os dados json do Banco Central do Brasil.</p>
+<div id="1833f618" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> requests</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> px</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">url <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@dataInicial=%2704-01-2025%27&amp;@dataFinalCotacao=%2704-30-2025%27&amp;$top=30&amp;$skip=0&amp;$format=json&amp;$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao'</span>)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">resposta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> requests.get(url)</span>
+<span id="cb1-8">dados <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> resposta.json()</span>
+<span id="cb1-9"></span>
+<span id="cb1-10">compras <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb1-11">vendas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb1-12">datas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb1-13"></span>
+<span id="cb1-14"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> valores <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> dados[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'value'</span>]:</span>
+<span id="cb1-15">    compras.append(valores[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'cotacaoCompra'</span>])</span>
+<span id="cb1-16">    vendas.append(valores[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'cotacaoVenda'</span>])</span>
+<span id="cb1-17">    datas.append(valores[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'dataHoraCotacao'</span>])</span>
+<span id="cb1-18">    </span>
+<span id="cb1-19">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame({</span>
+<span id="cb1-20">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>: datas,</span>
+<span id="cb1-21">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"compra"</span>: compras,</span>
+<span id="cb1-22">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"venda"</span>: vendas</span>
+<span id="cb1-23">})</span></code></pre></div></div>
+</div>
+<p>Esse é o código do grafico, utilizei o <code>plotly</code>, juntamente com as informações que extrai.</p>
+<div id="4d501148" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">fig <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> px.line(df, x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>, y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"compra"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"venda"</span>], title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>)</span>
+<span id="cb2-2">fig</span>
+<span id="cb2-3"></span>
+<span id="cb2-4">fig</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="ec363b35-a7ed-4a7c-90de-b6091a785122" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("ec363b35-a7ed-4a7c-90de-b6091a785122")) {                    Plotly.newPlot(                        "ec363b35-a7ed-4a7c-90de-b6091a785122",                        [{"hovertemplate":"variable=compra\u003cbr\u003edata=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"compra","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines","name":"compra","orientation":"v","showlegend":true,"x":["2025-04-01 13:07:29.553","2025-04-02 13:02:29.942","2025-04-03 13:03:27.756","2025-04-04 13:07:28.528","2025-04-07 13:09:28.183","2025-04-08 13:04:41.076","2025-04-09 13:06:01.578","2025-04-10 13:09:27.619","2025-04-11 13:08:27.767","2025-04-14 13:09:48.507","2025-04-15 13:07:27.338","2025-04-16 13:10:28.345","2025-04-17 13:11:49.566","2025-04-22 13:09:35.629","2025-04-23 13:06:30.416","2025-04-23 13:06:30.443","2025-04-24 13:04:29.639","2025-04-25 13:09:26.592","2025-04-28 13:04:26.378","2025-04-29 13:05:29.951","2025-04-30 13:11:27.944"],"xaxis":"x","y":{"dtype":"f8","bdata":"xSCwcmjRFkC\u002ffR04Z8QWQD9XW7G\u002fbBZA6+I2GsAbF0BcIEHxY4wXQJEPejarvhdAIR\u002f0bFY9GECitDf4wqQXQOeMKO0NfhdAdQKaCBteF0CX\u002f5B++3oXQL7BFyZThRdAQBNhw9NrF0Dl0CLb+f4WQOQUHcnlvxZA5BQdyeW\u002fFkA2qz5XW7EWQCPb+X5qvBZA7FG4HoWrFkBLyAc9m5UWQNxGA3gLpBZA"},"yaxis":"y","type":"scatter"},{"hovertemplate":"variable=venda\u003cbr\u003edata=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"venda","line":{"color":"#EF553B","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines","name":"venda","orientation":"v","showlegend":true,"x":["2025-04-01 13:07:29.553","2025-04-02 13:02:29.942","2025-04-03 13:03:27.756","2025-04-04 13:07:28.528","2025-04-07 13:09:28.183","2025-04-08 13:04:41.076","2025-04-09 13:06:01.578","2025-04-10 13:09:27.619","2025-04-11 13:08:27.767","2025-04-14 13:09:48.507","2025-04-15 13:07:27.338","2025-04-16 13:10:28.345","2025-04-17 13:11:49.566","2025-04-22 13:09:35.629","2025-04-23 13:06:30.416","2025-04-23 13:06:30.443","2025-04-24 13:04:29.639","2025-04-25 13:09:26.592","2025-04-28 13:04:26.378","2025-04-29 13:05:29.951","2025-04-30 13:11:27.944"],"xaxis":"x","y":{"dtype":"f8","bdata":"bqMBvAXSFkBNFYxK6sQWQMzuycNCbRZAlWWIY10cF0AFo5I6AY0XQDqSy39IvxdAy6FFtvM9GEBMN4lBYKUXQJEPejarfhdAH4XrUbheF0BBguLHmHsXQGdEaW\u002fwhRdA6pWyDHFsF0CPU3Qkl\u002f8WQI2XbhKDwBZAjZduEoPAFkDgLZCg+LEWQMxdS8gHvRZAldQJaCKsFkD1SlmGOJYWQIbJVMGopBZA"},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"data"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"value"}},"legend":{"title":{"text":"variable"},"tracegroupgap":0}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('ec363b35-a7ed-4a7c-90de-b6091a785122');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>programação</category>
+  <category>analise</category>
+  <category>python</category>
+  <category>cotação</category>
+  <category>código</category>
+  <guid>https://your-website-url.example.com/posts/post-with-code/</guid>
+  <pubDate>Sat, 22 Nov 2025 03:00:00 GMT</pubDate>
+  <media:content url="https://your-website-url.example.com/posts/post-with-code/Banco-central-do-brasil-logo.png" medium="image" type="image/png"/>
+</item>
+<item>
+  <title>Welcome To My Blog</title>
+  <dc:creator>Tristan O&#39;Malley</dc:creator>
+  <link>https://your-website-url.example.com/posts/welcome/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This is the first post in a Quarto blog. Welcome!</p>
+<p><img src="https://your-website-url.example.com/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
+<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <guid>https://your-website-url.example.com/posts/welcome/</guid>
+  <pubDate>Sat, 15 Nov 2025 03:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

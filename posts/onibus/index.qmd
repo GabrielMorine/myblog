@@ -1,0 +1,103 @@
+---
+title: "Monitoramento SPTRANS"
+author: "Gabriel Morine"
+date: "2025-11-23"
+categories: [news, onibus, código, python]
+jupyter: python3
+image: "download.png"
+---
+
+Aqui está o código que mapeia quando executado, a posiçao reak do onibus, e suas paradas.
+O código começa com um .env onde está nosso token e a linha que vamos utilizar 
+
+Bibiotecas usadas no código: ``requests``  ``folium``  ``os``  ``dotenv``
+
+```{python}
+import os
+import requests
+import folium
+from dotenv import load_dotenv
+
+
+load_dotenv(".env")
+
+CODIGO_LINHA = 2506 
+
+s = requests.Session()
+token = os.getenv('SPTRANS_TOKEN')
+
+s.post(f"http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token={token}")
+
+```
+
+Aqui as paradas:
+
+```{python}
+res_paradas = s.get(
+    f"http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha={CODIGO_LINHA}"
+)
+if res_paradas.status_code == 200:
+    paradas = res_paradas.json()
+else:
+    paradas = []
+```
+
+Posiçao real do onibus:
+```{python}
+res_posicao = s.get(
+    f"http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha={CODIGO_LINHA}"
+)
+
+veiculos = []
+hora_coleta = "-"
+
+if res_posicao.status_code == 200:
+    dados_posicao = res_posicao.json()
+    
+    veiculos = dados_posicao.get('vs', [])
+    hora_coleta = dados_posicao.get('hr', '-')
+```
+
+Por ultimo a geração do mapa
+```{python}
+
+
+if paradas:
+    lat_central = sum(p['py'] for p in paradas) / len(paradas)
+    lon_central = sum(p['px'] for p in paradas) / len(paradas)
+else:
+    lat_central, lon_central = -23.5489, -46.6388
+
+m = folium.Map(location=[lat_central, lon_central], zoom_start=14, tiles="cartodbpositron")
+
+
+for p in paradas:
+    folium.CircleMarker(
+        location=[p['py'], p['px']],
+        radius=4,
+        color='red',
+        fill=True,
+        fill_color='red',
+        fill_opacity=1.0,
+        popup=f"<b>Parada:</b> {p['np']}<br>{p['ed']}",
+        tooltip=p['np']
+    ).add_to(m)
+
+
+for v in veiculos:
+    popup_onibus = f"""
+        <b>Prefixo:</b> {v['p']}<br>
+        <b>Acessível:</b> {'Sim' if v['a'] else 'Não'}<br>
+        <b>Horário da info:</b> {hora_coleta}
+    """
+    
+    folium.Marker(
+        location=[v['py'], v['px']],
+        popup=popup_onibus,
+        tooltip=f"Ônibus {v['p']}",
+        icon=folium.Icon(color='green', icon='bus', prefix='fa')
+    ).add_to(m)
+
+
+m
+```

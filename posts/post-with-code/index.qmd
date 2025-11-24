@@ -1,0 +1,47 @@
+---
+title: "Cotação do Dolar"
+author: "Gabriel Morine"
+date: "2025-11-22"
+categories: [programação, analise, python, cotação, código]
+image: "Banco-central-do-brasil-logo.png"
+jupyter: python3
+---
+
+**Cotação Dolar:** Compra x Venda<br>
+Aqui está um programa simples em ``python``, utilizo a biblioteca ``requests`` junto com ``pandas`` para manusear os dados json do Banco Central do Brasil. 
+
+```{python}
+import requests
+import plotly.express as px
+import pandas as pd
+
+url = ('https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@dataInicial=%2704-01-2025%27&@dataFinalCotacao=%2704-30-2025%27&$top=30&$skip=0&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao')
+
+resposta = requests.get(url)
+dados = resposta.json()
+
+compras = []
+vendas = []
+datas = []
+
+for valores in dados['value']:
+    compras.append(valores['cotacaoCompra'])
+    vendas.append(valores['cotacaoVenda'])
+    datas.append(valores['dataHoraCotacao'])
+    
+df = pd.DataFrame({
+    "data": datas,
+    "compra": compras,
+    "venda": vendas
+})
+```
+
+Esse é o código do grafico, utilizei o ``plotly``, juntamente com as informações que extrai.  
+```{python}
+fig = px.line(df, x="data", y=["compra", "venda"], title="")
+fig
+
+fig
+
+
+```
