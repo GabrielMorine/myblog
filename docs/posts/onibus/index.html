@@ -202,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>Aqui está o código que mapeia quando executado, a posiçao reak do onibus, e suas paradas. O código começa com um .env onde está nosso token e a linha que vamos utilizar</p>
 <p>Bibiotecas usadas no código: <code>requests</code> <code>folium</code> <code>os</code> <code>dotenv</code></p>
-<div id="a95cd4c6" class="cell" data-execution_count="1">
+<div id="6e485ffe" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
@@ -222,7 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Aqui as paradas:</p>
-<div id="221f3e20" class="cell" data-execution_count="2">
+<div id="5c833d72" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>res_paradas <span class="op">=</span> s.get(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha=</span><span class="sc">{</span>CODIGO_LINHA<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -232,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    paradas <span class="op">=</span> []</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Posiçao real do onibus:</p>
-<div id="014b489b" class="cell" data-execution_count="3">
+<div id="0b9b4206" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>res_posicao <span class="op">=</span> s.get(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha=</span><span class="sc">{</span>CODIGO_LINHA<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    hora_coleta <span class="op">=</span> dados_posicao.get(<span class="st">'hr'</span>, <span class="st">'-'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Por ultimo a geração do mapa</p>
-<div id="26465361" class="cell" data-execution_count="4">
+<div id="0572884b" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> paradas:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    lat_central <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'py'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    lon_central <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'px'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
@@ -306,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_ce785d78bdf2c25a104295f3e1a393ce {
+                #map_050d218c46bc27328609c32cfd7f1959 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -343,14 +343,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_ce785d78bdf2c25a104295f3e1a393ce&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_050d218c46bc27328609c32cfd7f1959&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_ce785d78bdf2c25a104295f3e1a393ce = L.map(
-                &quot;map_ce785d78bdf2c25a104295f3e1a393ce&quot;,
+            var map_050d218c46bc27328609c32cfd7f1959 = L.map(
+                &quot;map_050d218c46bc27328609c32cfd7f1959&quot;,
                 {
                     center: [-23.5299502, -46.6715388],
                     crs: L.CRS.EPSG3857,
@@ -367,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_37b3b565f334fbfb0e36154cbc3d79eb = L.tileLayer(
+            var tile_layer_80ba4517a28b82b48b8567b5e82662cd = L.tileLayer(
                 &quot;https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -384,33 +384,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_37b3b565f334fbfb0e36154cbc3d79eb.addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            tile_layer_80ba4517a28b82b48b8567b5e82662cd.addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-            var circle_marker_f83662d30f24f06451ca3e3f4a278848 = L.circleMarker(
+            var circle_marker_220d72450af953afac90dfac31799164 = L.circleMarker(
                 [-23.534564, -46.654302],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_969ede57995241164167af893969aea3 = L.popup({
+        var popup_c473da3b56152e499a18e2c6ba127b9f = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_4ab9b77b45ede86af1fa4ed6fe297dbd = $(`<div id=&quot;html_4ab9b77b45ede86af1fa4ed6fe297dbd&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANGELICA B/C<br>AV   ANGELICA</div>`)[0];
-                popup_969ede57995241164167af893969aea3.setContent(html_4ab9b77b45ede86af1fa4ed6fe297dbd);
+                var html_03bd65aef1db0fc41a87ea4a600fcdc8 = $(`<div id=&quot;html_03bd65aef1db0fc41a87ea4a600fcdc8&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANGELICA B/C<br>AV   ANGELICA</div>`)[0];
+                popup_c473da3b56152e499a18e2c6ba127b9f.setContent(html_03bd65aef1db0fc41a87ea4a600fcdc8);
             
         
 
-        circle_marker_f83662d30f24f06451ca3e3f4a278848.bindPopup(popup_969ede57995241164167af893969aea3)
+        circle_marker_220d72450af953afac90dfac31799164.bindPopup(popup_c473da3b56152e499a18e2c6ba127b9f)
         ;
 
         
     
     
-            circle_marker_f83662d30f24f06451ca3e3f4a278848.bindTooltip(
+            circle_marker_220d72450af953afac90dfac31799164.bindTooltip(
                 `<div>
                      ANGELICA B/C
                  </div>`,
@@ -420,30 +420,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_8679a90939bbf452486ab9f7ed68d660 = L.circleMarker(
+            var circle_marker_0bb46bcb30f6e322426c2935c29a41f5 = L.circleMarker(
                 [-23.525799, -46.679251],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_a6ee7619905125f55274504114f15420 = L.popup({
+        var popup_35fe1d7bd64f762bb232781ff4172af6 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_83657e0ed4935dfe179a2f690ba2566e = $(`<div id=&quot;html_83657e0ed4935dfe179a2f690ba2566e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PARADA PALMEIRAS B/C<br>R PADRE ANTONIO TOMAS/ AV POMPEIA</div>`)[0];
-                popup_a6ee7619905125f55274504114f15420.setContent(html_83657e0ed4935dfe179a2f690ba2566e);
+                var html_2a57cba4e56f47a6358b0bed4b240110 = $(`<div id=&quot;html_2a57cba4e56f47a6358b0bed4b240110&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PARADA PALMEIRAS B/C<br>R PADRE ANTONIO TOMAS/ AV POMPEIA</div>`)[0];
+                popup_35fe1d7bd64f762bb232781ff4172af6.setContent(html_2a57cba4e56f47a6358b0bed4b240110);
             
         
 
-        circle_marker_8679a90939bbf452486ab9f7ed68d660.bindPopup(popup_a6ee7619905125f55274504114f15420)
+        circle_marker_0bb46bcb30f6e322426c2935c29a41f5.bindPopup(popup_35fe1d7bd64f762bb232781ff4172af6)
         ;
 
         
     
     
-            circle_marker_8679a90939bbf452486ab9f7ed68d660.bindTooltip(
+            circle_marker_0bb46bcb30f6e322426c2935c29a41f5.bindTooltip(
                 `<div>
                      PARADA PALMEIRAS B/C
                  </div>`,
@@ -453,30 +453,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_a634169fe635efe8b335d5f8b91436de = L.circleMarker(
+            var circle_marker_29cea50004931fccebbeab3544b6c86b = L.circleMarker(
                 [-23.526523, -46.673588],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_d4572f80d63ac0eb910709a13052e151 = L.popup({
+        var popup_5e7423b3d1bef7ab570d77b74853fec0 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_c01af8a145a2e892788c4c8d86838fc2 = $(`<div id=&quot;html_c01af8a145a2e892788c4c8d86838fc2&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANTARTICA B/C<br>PC SOUSA ARANHA/ VDTO ANTARTICA</div>`)[0];
-                popup_d4572f80d63ac0eb910709a13052e151.setContent(html_c01af8a145a2e892788c4c8d86838fc2);
+                var html_95c9989ef3cadbbc2c26972a0911701c = $(`<div id=&quot;html_95c9989ef3cadbbc2c26972a0911701c&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANTARTICA B/C<br>PC SOUSA ARANHA/ VDTO ANTARTICA</div>`)[0];
+                popup_5e7423b3d1bef7ab570d77b74853fec0.setContent(html_95c9989ef3cadbbc2c26972a0911701c);
             
         
 
-        circle_marker_a634169fe635efe8b335d5f8b91436de.bindPopup(popup_d4572f80d63ac0eb910709a13052e151)
+        circle_marker_29cea50004931fccebbeab3544b6c86b.bindPopup(popup_5e7423b3d1bef7ab570d77b74853fec0)
         ;
 
         
     
     
-            circle_marker_a634169fe635efe8b335d5f8b91436de.bindTooltip(
+            circle_marker_29cea50004931fccebbeab3544b6c86b.bindTooltip(
                 `<div>
                      ANTARTICA B/C
                  </div>`,
@@ -486,30 +486,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_da542d217502db6ef230ce3dfcfadb16 = L.circleMarker(
+            var circle_marker_deb5fcd10d550cb7e65ab05e3692bb62 = L.circleMarker(
                 [-23.528131, -46.670652],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_1f99e32487763a566ae37bee75a34d94 = L.popup({
+        var popup_395f06b6f669e6bb400a123b7faf3719 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_afe7d0a766b5fe03a23c741fb720f47a = $(`<div id=&quot;html_afe7d0a766b5fe03a23c741fb720f47a&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> BABY BARIONY B/C<br>R DONA GERMAINE BUCHARD/ R MINISTRO GODOI</div>`)[0];
-                popup_1f99e32487763a566ae37bee75a34d94.setContent(html_afe7d0a766b5fe03a23c741fb720f47a);
+                var html_bf07f50131b2ba09d233d6b1fa987509 = $(`<div id=&quot;html_bf07f50131b2ba09d233d6b1fa987509&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> BABY BARIONY B/C<br>R DONA GERMAINE BUCHARD/ R MINISTRO GODOI</div>`)[0];
+                popup_395f06b6f669e6bb400a123b7faf3719.setContent(html_bf07f50131b2ba09d233d6b1fa987509);
             
         
 
-        circle_marker_da542d217502db6ef230ce3dfcfadb16.bindPopup(popup_1f99e32487763a566ae37bee75a34d94)
+        circle_marker_deb5fcd10d550cb7e65ab05e3692bb62.bindPopup(popup_395f06b6f669e6bb400a123b7faf3719)
         ;
 
         
     
     
-            circle_marker_da542d217502db6ef230ce3dfcfadb16.bindTooltip(
+            circle_marker_deb5fcd10d550cb7e65ab05e3692bb62.bindTooltip(
                 `<div>
                      BABY BARIONY B/C
                  </div>`,
@@ -519,30 +519,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_33ab47066462445f5aea08364131034d = L.circleMarker(
+            var circle_marker_ac152c1e82ecfb70aaff60f40bf90035 = L.circleMarker(
                 [-23.53021, -46.6669],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_62a1fba7f5bbf1ee17c75ef3e9234396 = L.popup({
+        var popup_81826e8ae55f0d01819f2075cdc0413a = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_4eb821c28bb408800f5f104aded71f0f = $(`<div id=&quot;html_4eb821c28bb408800f5f104aded71f0f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PQ. DA ÁGUA BRANCA B/C<br>R MINISTRO GODOI/ R LINCOLN ALBUQUERQUE</div>`)[0];
-                popup_62a1fba7f5bbf1ee17c75ef3e9234396.setContent(html_4eb821c28bb408800f5f104aded71f0f);
+                var html_53203e6adc68e04bbc946cc6c0df26d6 = $(`<div id=&quot;html_53203e6adc68e04bbc946cc6c0df26d6&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PQ. DA ÁGUA BRANCA B/C<br>R MINISTRO GODOI/ R LINCOLN ALBUQUERQUE</div>`)[0];
+                popup_81826e8ae55f0d01819f2075cdc0413a.setContent(html_53203e6adc68e04bbc946cc6c0df26d6);
             
         
 
-        circle_marker_33ab47066462445f5aea08364131034d.bindPopup(popup_62a1fba7f5bbf1ee17c75ef3e9234396)
+        circle_marker_ac152c1e82ecfb70aaff60f40bf90035.bindPopup(popup_81826e8ae55f0d01819f2075cdc0413a)
         ;
 
         
     
     
-            circle_marker_33ab47066462445f5aea08364131034d.bindTooltip(
+            circle_marker_ac152c1e82ecfb70aaff60f40bf90035.bindTooltip(
                 `<div>
                      PQ. DA ÁGUA BRANCA B/C
                  </div>`,
@@ -552,30 +552,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_e59ee2119ccf475399d64033005d8cef = L.circleMarker(
+            var circle_marker_19f33ad4589b37e7c0ef1eb028095ef6 = L.circleMarker(
                 [-23.52494, -46.698995],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_ef545a910b0f1502ca73b7172ab620ba = L.popup({
+        var popup_0dfafef4cbf43ab09e9b198efc2f8b4e = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_cc5182b254169d4f120686bf80d95641 = $(`<div id=&quot;html_cc5182b254169d4f120686bf80d95641&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SCIPIAO B/C<br>R SCIPIAO/ R AURELIA</div>`)[0];
-                popup_ef545a910b0f1502ca73b7172ab620ba.setContent(html_cc5182b254169d4f120686bf80d95641);
+                var html_1f9c6a1c5ecefb38e75eb9fb145a76a4 = $(`<div id=&quot;html_1f9c6a1c5ecefb38e75eb9fb145a76a4&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SCIPIAO B/C<br>R SCIPIAO/ R AURELIA</div>`)[0];
+                popup_0dfafef4cbf43ab09e9b198efc2f8b4e.setContent(html_1f9c6a1c5ecefb38e75eb9fb145a76a4);
             
         
 
-        circle_marker_e59ee2119ccf475399d64033005d8cef.bindPopup(popup_ef545a910b0f1502ca73b7172ab620ba)
+        circle_marker_19f33ad4589b37e7c0ef1eb028095ef6.bindPopup(popup_0dfafef4cbf43ab09e9b198efc2f8b4e)
         ;
 
         
     
     
-            circle_marker_e59ee2119ccf475399d64033005d8cef.bindTooltip(
+            circle_marker_19f33ad4589b37e7c0ef1eb028095ef6.bindTooltip(
                 `<div>
                      SCIPIAO B/C
                  </div>`,
@@ -585,30 +585,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_32cea5f4da1c8fe930d7eb5e01710448 = L.circleMarker(
+            var circle_marker_007329bc7ee43e6adb34510a3e300da4 = L.circleMarker(
                 [-23.524994, -46.695297],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_49c671da8d4f56fb9ec1096478d13163 = L.popup({
+        var popup_047f377f29542221d72d88a410575279 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_d30550d96fc876c6eadd88073142dad6 = $(`<div id=&quot;html_d30550d96fc876c6eadd88073142dad6&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VESPASIANO B/C<br>R VESPASIANO/ R CAIO GRACO</div>`)[0];
-                popup_49c671da8d4f56fb9ec1096478d13163.setContent(html_d30550d96fc876c6eadd88073142dad6);
+                var html_ed06962858b557c70e7bdebb6fb41e30 = $(`<div id=&quot;html_ed06962858b557c70e7bdebb6fb41e30&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VESPASIANO B/C<br>R VESPASIANO/ R CAIO GRACO</div>`)[0];
+                popup_047f377f29542221d72d88a410575279.setContent(html_ed06962858b557c70e7bdebb6fb41e30);
             
         
 
-        circle_marker_32cea5f4da1c8fe930d7eb5e01710448.bindPopup(popup_49c671da8d4f56fb9ec1096478d13163)
+        circle_marker_007329bc7ee43e6adb34510a3e300da4.bindPopup(popup_047f377f29542221d72d88a410575279)
         ;
 
         
     
     
-            circle_marker_32cea5f4da1c8fe930d7eb5e01710448.bindTooltip(
+            circle_marker_007329bc7ee43e6adb34510a3e300da4.bindTooltip(
                 `<div>
                      VESPASIANO B/C
                  </div>`,
@@ -618,30 +618,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_4827e4636731f5128184db14ed512d1a = L.circleMarker(
+            var circle_marker_9ed0914098c090e913066974d8a12fc8 = L.circleMarker(
                 [-23.525029, -46.690074],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_99d4f77204ed252af702b5808f84da14 = L.popup({
+        var popup_b2ef9bf7db3967fcbeb0cdbbfb13a939 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_aade3f843062ec489e45d722a807ce7d = $(`<div id=&quot;html_aade3f843062ec489e45d722a807ce7d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CORNELIA<br>R CLAUDIO/ R CRASSO</div>`)[0];
-                popup_99d4f77204ed252af702b5808f84da14.setContent(html_aade3f843062ec489e45d722a807ce7d);
+                var html_5fc09502b1431da3d3a3ca97aa22297f = $(`<div id=&quot;html_5fc09502b1431da3d3a3ca97aa22297f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CORNELIA<br>R CLAUDIO/ R CRASSO</div>`)[0];
+                popup_b2ef9bf7db3967fcbeb0cdbbfb13a939.setContent(html_5fc09502b1431da3d3a3ca97aa22297f);
             
         
 
-        circle_marker_4827e4636731f5128184db14ed512d1a.bindPopup(popup_99d4f77204ed252af702b5808f84da14)
+        circle_marker_9ed0914098c090e913066974d8a12fc8.bindPopup(popup_b2ef9bf7db3967fcbeb0cdbbfb13a939)
         ;
 
         
     
     
-            circle_marker_4827e4636731f5128184db14ed512d1a.bindTooltip(
+            circle_marker_9ed0914098c090e913066974d8a12fc8.bindTooltip(
                 `<div>
                      CORNELIA
                  </div>`,
@@ -651,30 +651,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_c815bce3b2e835edf15ed5d09aeee6ae = L.circleMarker(
+            var circle_marker_2fc6c4c78de828d82ed82d5fdea6010a = L.circleMarker(
                 [-23.523407, -46.700541],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_e8899f520c41033f56f56190ecd5797e = L.popup({
+        var popup_6e3d51235c6960518c3ca7e05c2f8e3f = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_d5a99d4140fb6f6ba5e99fb2b733044d = $(`<div id=&quot;html_d5a99d4140fb6f6ba5e99fb2b733044d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CATAO B/C<br>R FAUSTOLO/ R ROMA</div>`)[0];
-                popup_e8899f520c41033f56f56190ecd5797e.setContent(html_d5a99d4140fb6f6ba5e99fb2b733044d);
+                var html_79bdc44874eecc4fef3dd80a89dfe224 = $(`<div id=&quot;html_79bdc44874eecc4fef3dd80a89dfe224&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> CATAO B/C<br>R FAUSTOLO/ R ROMA</div>`)[0];
+                popup_6e3d51235c6960518c3ca7e05c2f8e3f.setContent(html_79bdc44874eecc4fef3dd80a89dfe224);
             
         
 
-        circle_marker_c815bce3b2e835edf15ed5d09aeee6ae.bindPopup(popup_e8899f520c41033f56f56190ecd5797e)
+        circle_marker_2fc6c4c78de828d82ed82d5fdea6010a.bindPopup(popup_6e3d51235c6960518c3ca7e05c2f8e3f)
         ;
 
         
     
     
-            circle_marker_c815bce3b2e835edf15ed5d09aeee6ae.bindTooltip(
+            circle_marker_2fc6c4c78de828d82ed82d5fdea6010a.bindTooltip(
                 `<div>
                      CATAO B/C
                  </div>`,
@@ -684,30 +684,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_f5fb47a9f0a178f09649d5a842e92368 = L.circleMarker(
+            var circle_marker_ed897391247d6d7bbb1efe0db4ec7d95 = L.circleMarker(
                 [-23.52517, -46.683408],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_9972e23963b69c9949df68176eac0e67 = L.popup({
+        var popup_d619dfad85fb3c709f6683cd1561cc21 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_ae911e7cfd4992efe870e2948d6fae1e = $(`<div id=&quot;html_ae911e7cfd4992efe870e2948d6fae1e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SESC POMPEIA B/C<br>R TURIASSU/ R BARAO DO BANANAL</div>`)[0];
-                popup_9972e23963b69c9949df68176eac0e67.setContent(html_ae911e7cfd4992efe870e2948d6fae1e);
+                var html_c7db46062bc6b4385ab6d5de58c809f0 = $(`<div id=&quot;html_c7db46062bc6b4385ab6d5de58c809f0&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> SESC POMPEIA B/C<br>R TURIASSU/ R BARAO DO BANANAL</div>`)[0];
+                popup_d619dfad85fb3c709f6683cd1561cc21.setContent(html_c7db46062bc6b4385ab6d5de58c809f0);
             
         
 
-        circle_marker_f5fb47a9f0a178f09649d5a842e92368.bindPopup(popup_9972e23963b69c9949df68176eac0e67)
+        circle_marker_ed897391247d6d7bbb1efe0db4ec7d95.bindPopup(popup_d619dfad85fb3c709f6683cd1561cc21)
         ;
 
         
     
     
-            circle_marker_f5fb47a9f0a178f09649d5a842e92368.bindTooltip(
+            circle_marker_ed897391247d6d7bbb1efe0db4ec7d95.bindTooltip(
                 `<div>
                      SESC POMPEIA B/C
                  </div>`,
@@ -717,30 +717,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_3057c11d77da11bba6683404f59475f5 = L.circleMarker(
+            var circle_marker_c33a11f7c5303ca7263b84f406a5be74 = L.circleMarker(
                 [-23.540545, -46.643624],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_57f6794ed08075a946ce51252d1422f5 = L.popup({
+        var popup_871b31d1800fce71f2387d48896e91a7 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_c11241831db9141b92f9b94890b4f73e = $(`<div id=&quot;html_c11241831db9141b92f9b94890b4f73e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VITORIA B/C<br>R VITORIA/ AL BARAO DE CAMPINAS</div>`)[0];
-                popup_57f6794ed08075a946ce51252d1422f5.setContent(html_c11241831db9141b92f9b94890b4f73e);
+                var html_2cbeb6b77bbf5e3a7415a5bd93ad182a = $(`<div id=&quot;html_2cbeb6b77bbf5e3a7415a5bd93ad182a&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> VITORIA B/C<br>R VITORIA/ AL BARAO DE CAMPINAS</div>`)[0];
+                popup_871b31d1800fce71f2387d48896e91a7.setContent(html_2cbeb6b77bbf5e3a7415a5bd93ad182a);
             
         
 
-        circle_marker_3057c11d77da11bba6683404f59475f5.bindPopup(popup_57f6794ed08075a946ce51252d1422f5)
+        circle_marker_c33a11f7c5303ca7263b84f406a5be74.bindPopup(popup_871b31d1800fce71f2387d48896e91a7)
         ;
 
         
     
     
-            circle_marker_3057c11d77da11bba6683404f59475f5.bindTooltip(
+            circle_marker_c33a11f7c5303ca7263b84f406a5be74.bindTooltip(
                 `<div>
                      VITORIA B/C
                  </div>`,
@@ -750,30 +750,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_4282eebb6245d45b080ff1a051cecb86 = L.circleMarker(
+            var circle_marker_0d62e62ba2fc043ecd8875d3b153a1f7 = L.circleMarker(
                 [-23.532847, -46.657404],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_e8d706c059fff182b1e8b5c417a36714 = L.popup({
+        var popup_d0a0e0af6c94d45381fa26ea94f41fcd = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_bc7ecaa1be456d870c02ee498410a17d = $(`<div id=&quot;html_bc7ecaa1be456d870c02ee498410a17d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ROSA E SILVA C/B<br>R OLIMPIA DE ALMEIDA PRADO/ R LOPES DE OLIVEIRA</div>`)[0];
-                popup_e8d706c059fff182b1e8b5c417a36714.setContent(html_bc7ecaa1be456d870c02ee498410a17d);
+                var html_977b8cb9d4c5fb2aa0a1577f2086bdcd = $(`<div id=&quot;html_977b8cb9d4c5fb2aa0a1577f2086bdcd&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ROSA E SILVA C/B<br>R OLIMPIA DE ALMEIDA PRADO/ R LOPES DE OLIVEIRA</div>`)[0];
+                popup_d0a0e0af6c94d45381fa26ea94f41fcd.setContent(html_977b8cb9d4c5fb2aa0a1577f2086bdcd);
             
         
 
-        circle_marker_4282eebb6245d45b080ff1a051cecb86.bindPopup(popup_e8d706c059fff182b1e8b5c417a36714)
+        circle_marker_0d62e62ba2fc043ecd8875d3b153a1f7.bindPopup(popup_d0a0e0af6c94d45381fa26ea94f41fcd)
         ;
 
         
     
     
-            circle_marker_4282eebb6245d45b080ff1a051cecb86.bindTooltip(
+            circle_marker_0d62e62ba2fc043ecd8875d3b153a1f7.bindTooltip(
                 `<div>
                      ROSA E SILVA C/B
                  </div>`,
@@ -783,30 +783,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b = L.circleMarker(
+            var circle_marker_68874a50dcdffb35d7a5d2087f95c39c = L.circleMarker(
                 [-23.538708, -46.646888],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_b607383d0a55cf23aa3d84ca4bdb05af = L.popup({
+        var popup_cf69faa1067d830014cdf6440474ca55 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_a9cfb878d2ea98ac0802d48ae24a0f3f = $(`<div id=&quot;html_a9cfb878d2ea98ac0802d48ae24a0f3f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANA CINTRA B/C<br>R DOUTOR FREDERICO STEIDEL/ AV DUQUE DE CAXIAS</div>`)[0];
-                popup_b607383d0a55cf23aa3d84ca4bdb05af.setContent(html_a9cfb878d2ea98ac0802d48ae24a0f3f);
+                var html_c81c5e2214444d4f7d8d6db869348afd = $(`<div id=&quot;html_c81c5e2214444d4f7d8d6db869348afd&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> ANA CINTRA B/C<br>R DOUTOR FREDERICO STEIDEL/ AV DUQUE DE CAXIAS</div>`)[0];
+                popup_cf69faa1067d830014cdf6440474ca55.setContent(html_c81c5e2214444d4f7d8d6db869348afd);
             
         
 
-        circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b.bindPopup(popup_b607383d0a55cf23aa3d84ca4bdb05af)
+        circle_marker_68874a50dcdffb35d7a5d2087f95c39c.bindPopup(popup_cf69faa1067d830014cdf6440474ca55)
         ;
 
         
     
     
-            circle_marker_6b3ce4baef3e999d9822ee6550d9fa5b.bindTooltip(
+            circle_marker_68874a50dcdffb35d7a5d2087f95c39c.bindTooltip(
                 `<div>
                      ANA CINTRA B/C
                  </div>`,
@@ -816,30 +816,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_e99858cdb6d6f60a282f6163327a346f = L.circleMarker(
+            var circle_marker_3dd80af3f9c4476fd33e34e8aded2728 = L.circleMarker(
                 [-23.532068, -46.660957],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_4337f6fddc630e8cf83f45e59cfbc09b = L.popup({
+        var popup_965c865468b554933cce73ee22b92ec6 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_8624535a956345d3333a44ad65741470 = $(`<div id=&quot;html_8624535a956345d3333a44ad65741470&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PACAEMBU B/C<br>R FRANCISCO ESTACIO FORTES/ AV PACAEMBU</div>`)[0];
-                popup_4337f6fddc630e8cf83f45e59cfbc09b.setContent(html_8624535a956345d3333a44ad65741470);
+                var html_181e4915d11af253c7b9bbe746732f32 = $(`<div id=&quot;html_181e4915d11af253c7b9bbe746732f32&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> PACAEMBU B/C<br>R FRANCISCO ESTACIO FORTES/ AV PACAEMBU</div>`)[0];
+                popup_965c865468b554933cce73ee22b92ec6.setContent(html_181e4915d11af253c7b9bbe746732f32);
             
         
 
-        circle_marker_e99858cdb6d6f60a282f6163327a346f.bindPopup(popup_4337f6fddc630e8cf83f45e59cfbc09b)
+        circle_marker_3dd80af3f9c4476fd33e34e8aded2728.bindPopup(popup_965c865468b554933cce73ee22b92ec6)
         ;
 
         
     
     
-            circle_marker_e99858cdb6d6f60a282f6163327a346f.bindTooltip(
+            circle_marker_3dd80af3f9c4476fd33e34e8aded2728.bindTooltip(
                 `<div>
                      PACAEMBU B/C
                  </div>`,
@@ -849,30 +849,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var circle_marker_3fec9624338be40444c3e101a829bf26 = L.circleMarker(
+            var circle_marker_acd0e0d952e5f4433fa0c917ffc9e4df = L.circleMarker(
                 [-23.536318, -46.651201],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 1.0, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 4, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-        var popup_a5f2bc3702cfaf25ca71a50b506c4c42 = L.popup({
+        var popup_570f186cec11c266704cf711db3e8bab = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_ab38ee7af230ef507e4718926b8ae620 = $(`<div id=&quot;html_ab38ee7af230ef507e4718926b8ae620&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> NOTHMANN C/B<br>R GENERAL JULIO MARCONDES SALGADO/ AL NOTHMANN</div>`)[0];
-                popup_a5f2bc3702cfaf25ca71a50b506c4c42.setContent(html_ab38ee7af230ef507e4718926b8ae620);
+                var html_86c555ff0911cbed1548e30004d08887 = $(`<div id=&quot;html_86c555ff0911cbed1548e30004d08887&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;><b>Parada:</b> NOTHMANN C/B<br>R GENERAL JULIO MARCONDES SALGADO/ AL NOTHMANN</div>`)[0];
+                popup_570f186cec11c266704cf711db3e8bab.setContent(html_86c555ff0911cbed1548e30004d08887);
             
         
 
-        circle_marker_3fec9624338be40444c3e101a829bf26.bindPopup(popup_a5f2bc3702cfaf25ca71a50b506c4c42)
+        circle_marker_acd0e0d952e5f4433fa0c917ffc9e4df.bindPopup(popup_570f186cec11c266704cf711db3e8bab)
         ;
 
         
     
     
-            circle_marker_3fec9624338be40444c3e101a829bf26.bindTooltip(
+            circle_marker_acd0e0d952e5f4433fa0c917ffc9e4df.bindTooltip(
                 `<div>
                      NOTHMANN C/B
                  </div>`,
@@ -882,62 +882,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var marker_3b7159b385e88eead5aee2f665747738 = L.marker(
-                [-23.52501625, -46.685184250000006],
+            var marker_39db80b492f0f3c5814f26cfd479429e = L.marker(
+                [-23.52559025, -46.6819255],
                 {
 }
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
         
     
-            var icon_eb8b9263429400707ca06c51aaa0a513 = L.AwesomeMarkers.icon(
-                {
-  &quot;markerColor&quot;: &quot;green&quot;,
-  &quot;iconColor&quot;: &quot;white&quot;,
-  &quot;icon&quot;: &quot;bus&quot;,
-  &quot;prefix&quot;: &quot;fa&quot;,
-  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
-}
-            );
-        
-    
-        var popup_6a75c9077761376b644c0764f3dd3b0f = L.popup({
-  &quot;maxWidth&quot;: &quot;100%&quot;,
-});
-
-        
-            
-                var html_5b654fa4238053ad2c1029e09d945777 = $(`<div id=&quot;html_5b654fa4238053ad2c1029e09d945777&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12613<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 21:07     </div>`)[0];
-                popup_6a75c9077761376b644c0764f3dd3b0f.setContent(html_5b654fa4238053ad2c1029e09d945777);
-            
-        
-
-        marker_3b7159b385e88eead5aee2f665747738.bindPopup(popup_6a75c9077761376b644c0764f3dd3b0f)
-        ;
-
-        
-    
-    
-            marker_3b7159b385e88eead5aee2f665747738.bindTooltip(
-                `<div>
-                     Ônibus 12613
-                 </div>`,
-                {
-  &quot;sticky&quot;: true,
-}
-            );
-        
-    
-                marker_3b7159b385e88eead5aee2f665747738.setIcon(icon_eb8b9263429400707ca06c51aaa0a513);
-            
-    
-            var marker_9534571e987c12333a6ee328663aed89 = L.marker(
-                [-23.547649, -46.641011500000005],
-                {
-}
-            ).addTo(map_ce785d78bdf2c25a104295f3e1a393ce);
-        
-    
-            var icon_96b918e9b884903f132edcf3af16c7eb = L.AwesomeMarkers.icon(
+            var icon_fbee87296ceda31b90bc5bc96406d35e = L.AwesomeMarkers.icon(
                 {
   &quot;markerColor&quot;: &quot;green&quot;,
   &quot;iconColor&quot;: &quot;white&quot;,
@@ -948,26 +900,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        var popup_d433c60325c72c7ef85834151f7b3a7d = L.popup({
+        var popup_912f140346f595358601465b89d112c9 = L.popup({
   &quot;maxWidth&quot;: &quot;100%&quot;,
 });
 
         
             
-                var html_851b32ca16a70223bce6e0bda1a0c411 = $(`<div id=&quot;html_851b32ca16a70223bce6e0bda1a0c411&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12685<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 21:07     </div>`)[0];
-                popup_d433c60325c72c7ef85834151f7b3a7d.setContent(html_851b32ca16a70223bce6e0bda1a0c411);
+                var html_4b0aaa95103d9b9bd0e277a583ec687d = $(`<div id=&quot;html_4b0aaa95103d9b9bd0e277a583ec687d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12644<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 15:22     </div>`)[0];
+                popup_912f140346f595358601465b89d112c9.setContent(html_4b0aaa95103d9b9bd0e277a583ec687d);
             
         
 
-        marker_9534571e987c12333a6ee328663aed89.bindPopup(popup_d433c60325c72c7ef85834151f7b3a7d)
+        marker_39db80b492f0f3c5814f26cfd479429e.bindPopup(popup_912f140346f595358601465b89d112c9)
         ;
 
         
     
     
-            marker_9534571e987c12333a6ee328663aed89.bindTooltip(
+            marker_39db80b492f0f3c5814f26cfd479429e.bindTooltip(
                 `<div>
-                     Ônibus 12685
+                     Ônibus 12644
                  </div>`,
                 {
   &quot;sticky&quot;: true,
@@ -975,7 +927,151 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-                marker_9534571e987c12333a6ee328663aed89.setIcon(icon_96b918e9b884903f132edcf3af16c7eb);
+                marker_39db80b492f0f3c5814f26cfd479429e.setIcon(icon_fbee87296ceda31b90bc5bc96406d35e);
+            
+    
+            var marker_cd04601de35efde8ded84502e6e18bf2 = L.marker(
+                [-23.540681999999997, -46.6433255],
+                {
+}
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
+        
+    
+            var icon_0cf33ee02dd1e27240bfcf9fc94f2454 = L.AwesomeMarkers.icon(
+                {
+  &quot;markerColor&quot;: &quot;green&quot;,
+  &quot;iconColor&quot;: &quot;white&quot;,
+  &quot;icon&quot;: &quot;bus&quot;,
+  &quot;prefix&quot;: &quot;fa&quot;,
+  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
+}
+            );
+        
+    
+        var popup_4847ea4b13b6331361108151e26a5990 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_2d2376f85100b13af0a369b43ea247cb = $(`<div id=&quot;html_2d2376f85100b13af0a369b43ea247cb&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12520<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 15:22     </div>`)[0];
+                popup_4847ea4b13b6331361108151e26a5990.setContent(html_2d2376f85100b13af0a369b43ea247cb);
+            
+        
+
+        marker_cd04601de35efde8ded84502e6e18bf2.bindPopup(popup_4847ea4b13b6331361108151e26a5990)
+        ;
+
+        
+    
+    
+            marker_cd04601de35efde8ded84502e6e18bf2.bindTooltip(
+                `<div>
+                     Ônibus 12520
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+                marker_cd04601de35efde8ded84502e6e18bf2.setIcon(icon_0cf33ee02dd1e27240bfcf9fc94f2454);
+            
+    
+            var marker_ee1927ac8b44d3a69adf3f015eb42338 = L.marker(
+                [-23.5221425, -46.700432],
+                {
+}
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
+        
+    
+            var icon_516b1c12a7bae14f969979198556dcf7 = L.AwesomeMarkers.icon(
+                {
+  &quot;markerColor&quot;: &quot;green&quot;,
+  &quot;iconColor&quot;: &quot;white&quot;,
+  &quot;icon&quot;: &quot;bus&quot;,
+  &quot;prefix&quot;: &quot;fa&quot;,
+  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
+}
+            );
+        
+    
+        var popup_471b261225c990ef27de39d97bde5133 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_6076d0da74d58746b1fbe1b67fac0704 = $(`<div id=&quot;html_6076d0da74d58746b1fbe1b67fac0704&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12592<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 15:22     </div>`)[0];
+                popup_471b261225c990ef27de39d97bde5133.setContent(html_6076d0da74d58746b1fbe1b67fac0704);
+            
+        
+
+        marker_ee1927ac8b44d3a69adf3f015eb42338.bindPopup(popup_471b261225c990ef27de39d97bde5133)
+        ;
+
+        
+    
+    
+            marker_ee1927ac8b44d3a69adf3f015eb42338.bindTooltip(
+                `<div>
+                     Ônibus 12592
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+                marker_ee1927ac8b44d3a69adf3f015eb42338.setIcon(icon_516b1c12a7bae14f969979198556dcf7);
+            
+    
+            var marker_176449eeef01027dda6532623136af19 = L.marker(
+                [-23.528008, -46.6709235],
+                {
+}
+            ).addTo(map_050d218c46bc27328609c32cfd7f1959);
+        
+    
+            var icon_bab7e5ef7cbfd26b23af1abc371b58c7 = L.AwesomeMarkers.icon(
+                {
+  &quot;markerColor&quot;: &quot;green&quot;,
+  &quot;iconColor&quot;: &quot;white&quot;,
+  &quot;icon&quot;: &quot;bus&quot;,
+  &quot;prefix&quot;: &quot;fa&quot;,
+  &quot;extraClasses&quot;: &quot;fa-rotate-0&quot;,
+}
+            );
+        
+    
+        var popup_e1ef30c0eda601cf627cfb5a6178e581 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_4557a76abb44879025f87352740806a7 = $(`<div id=&quot;html_4557a76abb44879025f87352740806a7&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>         <b>Prefixo:</b> 12521<br>         <b>Acessível:</b> Sim<br>         <b>Horário da info:</b> 15:22     </div>`)[0];
+                popup_e1ef30c0eda601cf627cfb5a6178e581.setContent(html_4557a76abb44879025f87352740806a7);
+            
+        
+
+        marker_176449eeef01027dda6532623136af19.bindPopup(popup_e1ef30c0eda601cf627cfb5a6178e581)
+        ;
+
+        
+    
+    
+            marker_176449eeef01027dda6532623136af19.bindTooltip(
+                `<div>
+                     Ônibus 12521
+                 </div>`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+                marker_176449eeef01027dda6532623136af19.setIcon(icon_bab7e5ef7cbfd26b23af1abc371b58c7);
             
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
